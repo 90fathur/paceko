@@ -1,8 +1,8 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/dpobtoro/paceko.com/
+    - export DEPLOYPATH=/home/dpobtoro/paceko.com
     - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
     - /bin/cp -R vendor $DEPLOYPATH
-    - /bin/cp -R public/* $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
