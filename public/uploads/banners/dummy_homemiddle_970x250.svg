@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 970 200" width="970" height="200">
+  <defs>
+    <linearGradient id="promoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#881337" />
+      <stop offset="50%" stop-color="#be123c" />
+      <stop offset="100%" stop-color="#E50914" />
+    </linearGradient>
+    <linearGradient id="goldPromo" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fde047" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="970" height="200" rx="12" fill="url(#promoGrad)"/>
+  <rect x="1" y="1" width="968" height="198" rx="11" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-opacity="0.5"/>
+  
+  <circle cx="80" cy="100" r="45" fill="#ffffff" fill-opacity="0.15"/>
+  <!-- Megaphone / Ads Icon -->
+  <path d="M65 85 L78 85 L95 72 L95 128 L78 115 L65 115 Z M95 90 C102 94 105 100 105 100 C105 100 102 106 95 110" fill="url(#goldPromo)"/>
+  
+  <rect x="150" y="28" width="120" height="22" rx="4" fill="url(#goldPromo)"/>
+  <text x="160" y="43" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="900" fill="#881337">PACEKO ADS PROMO</text>
+  
+  <text x="150" y="86" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="900" fill="#ffffff" letter-spacing="-0.3">LEJITKAN BISNIS &amp; BRAND ANDA DI SULAWESI BARAT</text>
+  <text x="150" y="115" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="500" fill="#fecdd3">Jangkau lebih dari 150.000 pembaca aktif setiap bulan. Slot banner strategis, advertorial berita, dan ulasan produk premium.</text>
+  
+  <g transform="translate(150, 142)">
+    <text x="0" y="18" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#fde047">🔥 Diskon 30% Paket Iklan Triwulan Pertama • Konsultasi Desain Banner Gratis!</text>
+  </g>
+  
+  <!-- Right CTA -->
+  <rect x="740" y="65" width="200" height="52" rx="26" fill="#ffffff"/>
+  <text x="840" y="96" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="900" fill="#E50914" text-anchor="middle">PASANG IKLAN SEKARANG</text>
+  
+  <rect x="850" y="165" width="105" height="20" rx="4" fill="#000000" fill-opacity="0.4"/>
+  <text x="902" y="179" font-family="monospace" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">970 x 250 px</text>
+</svg>

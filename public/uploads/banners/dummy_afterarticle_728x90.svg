@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 728 90" width="728" height="90">
+  <defs>
+    <linearGradient id="travelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369a1" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+    <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#fb923c" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="728" height="90" rx="8" fill="url(#travelGrad)"/>
+  <rect x="0.5" y="0.5" width="727" height="89" rx="7.5" fill="none" stroke="#38bdf8" stroke-width="1"/>
+  
+  <!-- Icon & Wave -->
+  <circle cx="45" cy="45" r="24" fill="#ffffff" fill-opacity="0.2"/>
+  <path d="M35 52 C38 42 42 35 48 35 C52 35 55 42 55 52" fill="none" stroke="#fde047" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="38" r="4" fill="#fde047"/>
+  
+  <text x="86" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="900" fill="#ffffff">PESONA WISATA POLEWALI MANDAR &amp; SULBAR</text>
+  <text x="86" y="53" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="500" fill="#e0f2fe">Jelajahi keindahan Pantai Palippis, Negeri di Atas Awan Mamasa &amp; Warisan Budaya Mandar.</text>
+  <text x="86" y="72" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="600" fill="#fef08a">🌴 Paket Tour Wisata Bahari &amp; Kuliner Tradisional Mulai Rp350.000 / Orang</text>
+  
+  <rect x="580" y="26" width="132" height="38" rx="19" fill="url(#sunsetGrad)"/>
+  <text x="646" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="900" fill="#ffffff" text-anchor="middle">JELAJAHI SEKARANG</text>
+  
+  <rect x="635" y="68" width="77" height="14" rx="3" fill="#000000" fill-opacity="0.4"/>
+  <text x="673" y="78.5" font-family="monospace" font-size="8" font-weight="600" fill="#ffffff" text-anchor="middle">728 x 90 px</text>
+</svg>

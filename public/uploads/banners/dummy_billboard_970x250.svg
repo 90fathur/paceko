@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 970 250" width="970" height="250">
+  <defs>
+    <linearGradient id="sulbarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" />
+      <stop offset="45%" stop-color="#047857" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+    <linearGradient id="goldSulbar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <pattern id="gridPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.08"/>
+    </pattern>
+  </defs>
+  
+  <rect width="970" height="250" rx="12" fill="url(#sulbarGrad)"/>
+  <rect width="970" height="250" rx="12" fill="url(#gridPattern)"/>
+  <rect x="1" y="1" width="968" height="248" rx="11" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.4"/>
+  
+  <!-- Left Side Badge & Icon -->
+  <circle cx="100" cy="125" r="55" fill="#ffffff" fill-opacity="0.12"/>
+  <circle cx="100" cy="125" r="45" fill="url(#goldSulbar)"/>
+  <!-- Star emblem / Garuda symbol silhouette -->
+  <path d="M100 95 L106 112 L124 112 L110 123 L115 140 L100 129 L85 140 L90 123 L76 112 L94 112 Z" fill="#064e3b"/>
+  
+  <!-- Content Body -->
+  <rect x="180" y="32" width="160" height="24" rx="4" fill="url(#goldSulbar)"/>
+  <text x="190" y="48" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="800" fill="#064e3b" letter-spacing="1">LAYANAN PUBLIK RESMI</text>
+  
+  <text x="180" y="94" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" fill="#ffffff" letter-spacing="-0.5">PEMERINTAH PROVINSI SULAWESI BARAT</text>
+  <text x="180" y="126" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" fill="#fef08a">Mewujudkan Sulbar Maju, Mandiri, Berdaya Saing &amp; Malaqbi</text>
+  <text x="180" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#d1fae5">Portal Informasi Pelayanan Publik, Investasi Daerah, Perizinan Terpadu, dan Pengaduan Masyarakat.</text>
+  
+  <!-- Bullet Features -->
+  <g transform="translate(180, 185)">
+    <rect x="0" y="0" width="145" height="30" rx="15" fill="#ffffff" fill-opacity="0.15"/>
+    <text x="72" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">✓ Bebas Pungli</text>
+    
+    <rect x="155" y="0" width="165" height="30" rx="15" fill="#ffffff" fill-opacity="0.15"/>
+    <text x="237" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">✓ Pelayanan Cepat 24/7</text>
+    
+    <rect x="330" y="0" width="150" height="30" rx="15" fill="#ffffff" fill-opacity="0.15"/>
+    <text x="405" y="19" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">✓ Transparan &amp; Akuntabel</text>
+  </g>
+  
+  <!-- Right CTA & Size Badge -->
+  <rect x="740" y="85" width="195" height="50" rx="25" fill="url(#goldSulbar)"/>
+  <text x="837" y="115" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="900" fill="#064e3b" text-anchor="middle">KUNJUNGI PORTAL &rarr;</text>
+  <text x="837" y="152" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#a7f3d0" text-anchor="middle">www.sulbarprov.go.id</text>
+  
+  <rect x="850" y="218" width="105" height="20" rx="4" fill="#000000" fill-opacity="0.4"/>
+  <text x="902" y="232" font-family="monospace" font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">970 x 250 px</text>
+</svg>

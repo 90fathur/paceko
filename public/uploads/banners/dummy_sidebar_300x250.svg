@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250" width="300" height="250">
+  <defs>
+    <linearGradient id="coffeeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#271c19" />
+      <stop offset="50%" stop-color="#451a03" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="goldCoffee" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="300" height="250" rx="10" fill="url(#coffeeGrad)"/>
+  <rect x="1" y="1" width="298" height="248" rx="9" fill="none" stroke="#92400e" stroke-width="1.5"/>
+  
+  <!-- Top Tag -->
+  <rect x="20" y="18" width="105" height="18" rx="4" fill="url(#goldCoffee)"/>
+  <text x="26" y="31" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="800" fill="#271c19">PRODUK LOKAL SULBAR</text>
+  
+  <!-- Icon & Header -->
+  <text x="20" y="66" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="900" fill="#ffffff">KOPI ARABIKA MAMASA</text>
+  <text x="20" y="86" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#fde68a">100% Organik Pegunungan Gandangdewata</text>
+  
+  <!-- Coffee Cup Visual -->
+  <g transform="translate(20, 102)">
+    <circle cx="28" cy="28" r="24" fill="#ffffff" fill-opacity="0.12"/>
+    <path d="M18 20 L38 20 L35 38 L21 38 Z M38 24 C42 24 44 26 44 29 C44 32 42 34 37 34" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="65" y="24" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#ffffff">Cita Rasa Otentik</text>
+    <text x="65" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="400" fill="#d6d3d1">Aroma Floral &amp; Nutty Notes</text>
+  </g>
+  
+  <text x="20" y="174" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="400" fill="#fef3c7">Tersedia varian Roast Bean &amp; Bubuk Halus. Siap kirim ke seluruh Indonesia!</text>
+  
+  <!-- CTA Button -->
+  <rect x="20" y="192" width="180" height="38" rx="8" fill="url(#goldCoffee)"/>
+  <text x="110" y="216" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="800" fill="#271c19" text-anchor="middle">PESAN SEKARANG &rarr;</text>
+  
+  <rect x="215" y="210" width="75" height="18" rx="3" fill="#000000" fill-opacity="0.5"/>
+  <text x="252" y="223" font-family="monospace" font-size="8.5" font-weight="600" fill="#ffffff" text-anchor="middle">300 x 250 px</text>
+</svg>

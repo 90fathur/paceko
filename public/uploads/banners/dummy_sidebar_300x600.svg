@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 600" width="300" height="600">
+  <defs>
+    <linearGradient id="univGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="40%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#172554" />
+    </linearGradient>
+    <linearGradient id="univGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#facc15" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="300" height="600" rx="12" fill="url(#univGrad)"/>
+  <rect x="1" y="1" width="298" height="598" rx="11" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.4"/>
+  
+  <!-- University Emblem -->
+  <circle cx="150" cy="70" r="40" fill="#ffffff" fill-opacity="0.1"/>
+  <circle cx="150" cy="70" r="32" fill="url(#univGold)"/>
+  <!-- Graduation Cap -->
+  <path d="M150 56 L168 65 L150 74 L132 65 Z M140 76 L140 82 C140 86 160 86 160 82 L160 76" fill="#0f172a"/>
+  
+  <!-- Institution Title -->
+  <text x="150" y="130" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">UNIVERSITAS SULAWESI BARAT</text>
+  <text x="150" y="148" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="url(#univGold)" text-anchor="middle">KAMPUS NEGERI MAJU &amp; BERKUALITAS</text>
+  
+  <rect x="35" y="170" width="230" height="42" rx="8" fill="url(#univGold)"/>
+  <text x="150" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="900" fill="#0f172a" text-anchor="middle">PENERIMAAN MAHASISWA BARU</text>
+  <text x="150" y="204" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#0f172a" text-anchor="middle">TAHUN AKADEMIK 2026 / 2027</text>
+  
+  <!-- Faculty Highlights -->
+  <text x="24" y="245" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#93c5fd" letter-spacing="0.5">PROGRAM STUDI UNGGULAN:</text>
+  
+  <g transform="translate(24, 260)">
+    <rect x="0" y="0" width="252" height="34" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff">🎓 Fakultas Teknik &amp; Informatika</text>
+    
+    <rect x="0" y="42" width="252" height="34" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="14" y="63" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff">🎓 Fakultas Ekonomi &amp; Bisnis</text>
+    
+    <rect x="0" y="84" width="252" height="34" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="14" y="105" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff">🎓 Fakultas Pertanian &amp; Kehutanan</text>
+    
+    <rect x="0" y="126" width="252" height="34" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="14" y="147" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff">🎓 Fakultas Ilmu Kesehatan &amp; Ners</text>
+    
+    <rect x="0" y="168" width="252" height="34" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+    <text x="14" y="189" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#ffffff">🎓 Fakultas Hukum &amp; Ilmu Sosial</text>
+  </g>
+  
+  <!-- Info Beasiswa -->
+  <rect x="24" y="480" width="252" height="36" rx="6" fill="#1e293b"/>
+  <text x="150" y="502" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="700" fill="#fde047" text-anchor="middle">★ Tersedia Beasiswa KIP Kuliah &amp; Prestasi ★</text>
+  
+  <!-- CTA Button -->
+  <rect x="35" y="530" width="230" height="42" rx="21" fill="url(#univGold)"/>
+  <text x="150" y="556" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="900" fill="#0f172a" text-anchor="middle">DAFTAR ONLINE SEKARANG</text>
+  
+  <text x="150" y="588" font-family="monospace" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">Ukuran: 300 x 600 px (Half Page)</text>
+</svg>

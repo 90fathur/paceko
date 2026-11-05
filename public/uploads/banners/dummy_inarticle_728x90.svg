@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 728 90" width="728" height="90">
+  <defs>
+    <linearGradient id="inartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#991b1b" />
+      <stop offset="60%" stop-color="#E50914" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="728" height="90" rx="8" fill="url(#inartGrad)"/>
+  <rect x="0.5" y="0.5" width="727" height="89" rx="7.5" fill="none" stroke="#fca5a5" stroke-width="1" stroke-opacity="0.6"/>
+  
+  <!-- Icon & Signal Waves -->
+  <circle cx="45" cy="45" r="24" fill="#ffffff" fill-opacity="0.2"/>
+  <text x="45" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#ffffff" text-anchor="middle">5G</text>
+  
+  <text x="86" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="900" fill="#ffffff">JARINGAN SUPER CEPAT TELKOMSEL SULBAR</text>
+  <text x="86" y="53" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="500" fill="#fee2e2">Streaming video tanpa buffering &amp; main game anti-lag. Sinyal kuat hingga pelosok desa.</text>
+  <text x="86" y="72" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="700" fill="#fef08a">🔥 Paket Data Spesial 50GB mulai Rp50.000 hanya di Aplikasi MyTelkomsel</text>
+  
+  <rect x="585" y="26" width="128" height="38" rx="19" fill="#ffffff"/>
+  <text x="649" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="900" fill="#E50914" text-anchor="middle">BELI SEKARANG</text>
+  
+  <rect x="635" y="68" width="77" height="14" rx="3" fill="#000000" fill-opacity="0.4"/>
+  <text x="673" y="78.5" font-family="monospace" font-size="8" font-weight="600" fill="#ffffff" text-anchor="middle">728 x 90 px</text>
+</svg>
