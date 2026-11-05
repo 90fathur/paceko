@@ -98,11 +98,18 @@ class News extends BaseController
                 $featuredImagePath = 'news/' . $newName;
             }
 
+            $rawContent = $this->request->getPost('content');
+            if (is_string($rawContent) && str_starts_with($rawContent, 'base64:')) {
+                $content = base64_decode(substr($rawContent, 7));
+            } else {
+                $content = $rawContent;
+            }
+
             $postData = [
                 'title'     => $this->request->getPost('title'),
                 'slug'      => $this->request->getPost('slug'),
                 'excerpt'   => $this->request->getPost('excerpt'),
-                'content'   => $this->request->getPost('content'),
+                'content'   => $content,
                 'status'    => $this->request->getPost('status'),
                 'author_id' => session()->get('user_id') ?? 1
             ];
@@ -174,11 +181,18 @@ class News extends BaseController
                 $featuredImagePath = 'news/' . $newName;
             }
 
+            $rawContent = $this->request->getPost('content');
+            if (is_string($rawContent) && str_starts_with($rawContent, 'base64:')) {
+                $content = base64_decode(substr($rawContent, 7));
+            } else {
+                $content = $rawContent;
+            }
+
             $postData = [
                 'title'   => $this->request->getPost('title'),
                 'slug'    => $this->request->getPost('slug'),
                 'excerpt' => $this->request->getPost('excerpt'),
-                'content' => $this->request->getPost('content'),
+                'content' => $content,
                 'status'  => $this->request->getPost('status'),
             ];
 

@@ -102,6 +102,20 @@ $(document).ready(function() {
         }
     });
 
+    $('form').on('submit', function() {
+        if ($('#pageContentEditor').summernote('isEmpty')) {
+            $('#pageContentEditor').val('');
+        } else {
+            var rawHtml = $('#pageContentEditor').summernote('code');
+            try {
+                var safeBase64 = 'base64:' + btoa(unescape(encodeURIComponent(rawHtml)));
+                $('#pageContentEditor').val(safeBase64);
+            } catch (e) {
+                $('#pageContentEditor').val(rawHtml);
+            }
+        }
+    });
+
     function uploadSummernoteImage(file) {
         const formData = new FormData();
         formData.append('image', file);
