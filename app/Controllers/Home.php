@@ -368,4 +368,50 @@ class Home extends BaseController
         $breakingNews  = $this->postModel->getBreakingNews(8);
         return view('pages/kontak', compact('navCategories', 'allCategories', 'breakingNews') + ['title' => 'Kontak & Informasi - PACEKO.com']);
     }
+
+    /**
+     * Dynamic media handler for legacy WordPress uploads
+     * Catches and serves images whether wp-content is in public/ or outside
+     */
+    public function media(string ...$segments)
+    {
+        $path = implode('/', $segments);
+        $path = str_replace(['../', '..\\'], '', $path);
+
+        $candidates = [
+            FCPATH . 'wp-content/uploads/' . $path,
+            FCPATH . '../wp-content/uploads/' . $path,
+            FCPATH . '../wordpress_lama/wp-content/uploads/' . $path,
+            FCPATH . '../wp_lama/wp-content/uploads/' . $path,
+            FCPATH . '../backup_wp/wp-content/uploads/' . $path,
+            FCPATH . 'uploads/' . $path,
+        ];
+
+        foreach ($candidates as $cand) {
+            if (file_exists($cand) && is_file($cand)) {
+                $ext = strtolower(pathinfo($cand, PATHINFO_EXTENSION));
+                $mimes = [
+                    'jpg'  => 'image/jpeg',
+                    'jpeg' => 'image/jpeg',
+                    'png'  => 'image/png',
+                    'gif'  => 'image/gif',
+                    'webp' => 'image/webp',
+                    'svg'  => 'image/svg+xml',
+                ];
+                $mime = $mimes[$ext] ?? 'image/jpeg';
+
+                return $this->response
+                    ->setHeader('Content-Type', $mime)
+                    ->setHeader('Cache-Control', 'public, max-age=2592000')
+                    ->setBody(file_get_contents($cand));
+            }
+        }
+
+        // On localhost, proxy/redirect to live server if missing
+        if (ENVIRONMENT !== 'production' || strpos(base_url(), 'localhost') !== false) {
+            return redirect()->to('https://paceko.com/wp-content/uploads/' . $path);
+        }
+
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Media tidak ditemukan');
+    }
 }

@@ -105,3 +105,4 @@ INSERT INTO `paceko_menus` (`id`, `title`, `url`, `parent_id`, `order_num`, `tar
 (18, 'Info Pasang Iklan', '/halaman/tarif-iklan-paceko', 7, 4, '_self', 1, NOW()),
 (19, 'Kontak Redaksi', '/kontak', 7, 5, '_self', 1, NOW())
 ON DUPLICATE KEY UPDATE `is_active` = 1;
+

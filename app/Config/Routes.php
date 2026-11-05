@@ -12,6 +12,7 @@ $routes->get('berita/(:segment)', 'Home::detail/$1');
 $routes->get('kategori/(:segment)', 'Home::category/$1');
 $routes->get('cari', 'Home::search');
 $routes->get('placeholder', 'Home::placeholder');
+$routes->get('wp-content/uploads/(:any)', 'Home::media/$1');
 $routes->get('halaman/(:segment)', 'Home::page/$1');
 
 // Static Pages & Contact Form

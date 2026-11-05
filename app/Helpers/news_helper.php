@@ -42,6 +42,7 @@ if (!function_exists('get_post_image')) {
                 FCPATH . 'uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'uploads/wp-content/uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'wp-content/uploads/' . ltrim($imagePath, '/'),
+                FCPATH . '../wp-content/uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'wordpress_lama/wp-content/uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'backup_wp/wp-content/uploads/' . ltrim($imagePath, '/'),
                 FCPATH . '../wordpress_lama/wp-content/uploads/' . ltrim($imagePath, '/'),
@@ -49,9 +50,19 @@ if (!function_exists('get_post_image')) {
 
             foreach ($candidates as $cand) {
                 if (file_exists($cand) && !is_dir($cand)) {
-                    $rel = str_replace('\\', '/', substr($cand, strlen(FCPATH)));
-                    return base_url($rel);
+                    if (str_starts_with($cand, FCPATH)) {
+                        $rel = str_replace('\\', '/', substr($cand, strlen(FCPATH)));
+                        return base_url($rel);
+                    } else {
+                        return base_url('wp-content/uploads/' . ltrim($imagePath, '/'));
+                    }
                 }
+            }
+
+            // If image is defined in WordPress database, return its wp-content/uploads URL
+            // (Home::media route will serve it from parent folder or proxy it from live site)
+            if (!empty($imagePath)) {
+                return base_url('wp-content/uploads/' . ltrim($imagePath, '/'));
             }
         }
 
