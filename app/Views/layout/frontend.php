@@ -3,10 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO & Metadata -->
     <title><?= esc($title ?? get_setting('site_title', 'PACEKO.com') . ' - ' . get_setting('site_tagline', 'Media Informasi, Inspirasi dan Inovatif')) ?></title>
     <meta name="description" content="<?= esc($metaDescription ?? get_setting('site_description', 'Portal Berita Terkini, Akurat, dan Terpercaya - PACEKO.com')) ?>">
-    <meta name="keywords" content="<?= esc(get_setting('site_keywords', 'paceko, berita sulbar, berita polman')) ?>">
+    <meta name="keywords" content="<?= esc(get_setting('site_keywords', 'paceko, berita sulbar, berita polman, berita polewali mandar sulawesi barat')) ?>">
+    <meta name="author" content="<?= esc($author ?? get_setting('site_title', 'PACEKO.com')) ?>">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="<?= esc($ogUrl ?? current_url()) ?>">
     <link rel="icon" type="image/png" href="<?= base_url(get_setting('site_favicon', 'assets/images/logo.png')) ?>">
+
+    <!-- Open Graph / Facebook / WhatsApp Rich Link Preview -->
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="<?= esc(get_setting('site_title', 'PACEKO.com')) ?>">
+    <meta property="og:type" content="<?= esc($ogType ?? 'website') ?>">
+    <meta property="og:url" content="<?= esc($ogUrl ?? current_url()) ?>">
+    <meta property="og:title" content="<?= esc($ogTitle ?? $title ?? get_setting('site_title', 'PACEKO.com')) ?>">
+    <meta property="og:description" content="<?= esc($ogDescription ?? $metaDescription ?? get_setting('site_description', 'Portal Berita Terkini, Akurat, dan Terpercaya - PACEKO.com')) ?>">
+    <meta property="og:image" content="<?= esc($ogImage ?? base_url('assets/images/og-default.jpg')) ?>">
+    <meta property="og:image:secure_url" content="<?= esc($ogImage ?? base_url('assets/images/og-default.jpg')) ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="<?= esc($ogTitle ?? $title ?? 'PACEKO.com') ?>">
+    <?php if (($ogType ?? 'website') === 'article'): ?>
+        <?php if (!empty($publishedTime)): ?>
+    <meta property="article:published_time" content="<?= esc(date('c', strtotime($publishedTime))) ?>">
+        <?php endif; ?>
+        <?php if (!empty($modifiedTime)): ?>
+    <meta property="article:modified_time" content="<?= esc(date('c', strtotime($modifiedTime))) ?>">
+        <?php endif; ?>
+        <?php if (!empty($author)): ?>
+    <meta property="article:author" content="<?= esc($author) ?>">
+        <?php endif; ?>
+        <?php if (!empty($section)): ?>
+    <meta property="article:section" content="<?= esc($section) ?>">
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <!-- Twitter / X Card Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<?= esc($ogUrl ?? current_url()) ?>">
+    <meta name="twitter:title" content="<?= esc($ogTitle ?? $title ?? get_setting('site_title', 'PACEKO.com')) ?>">
+    <meta name="twitter:description" content="<?= esc($ogDescription ?? $metaDescription ?? get_setting('site_description', 'Portal Berita Terkini, Akurat, dan Terpercaya - PACEKO.com')) ?>">
+    <meta name="twitter:image" content="<?= esc($ogImage ?? base_url('assets/images/og-default.jpg')) ?>">
+
+    <!-- Schema.org JSON-LD for Google, WhatsApp & Social Search -->
+    <?php if (($ogType ?? 'website') === 'article' && !empty($post)): ?>
+    <?php
+    $schemaArticle = [
+        '@context' => 'https://schema.org',
+        '@type' => 'NewsArticle',
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => $ogUrl ?? current_url()
+        ],
+        'headline' => $post['post_title'],
+        'image' => [
+            $ogImage ?? base_url('assets/images/og-default.jpg')
+        ],
+        'datePublished' => date('c', strtotime($post['post_date'])),
+        'dateModified' => date('c', strtotime($post['post_modified'] ?? $post['post_date'])),
+        'author' => [[
+            '@type' => 'Person',
+            'name' => $post['author_name'] ?? 'Redaksi PACEKO'
+        ]],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'PACEKO.COM',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => base_url('assets/images/logo.png')
+            ]
+        ],
+        'description' => $ogDescription ?? ''
+    ];
+    ?>
+    <script type="application/ld+json">
+    <?= json_encode($schemaArticle, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>
+    </script>
+    <?php else: ?>
+    <?php
+    $schemaWebsite = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => 'PACEKO.com',
+        'url' => base_url(),
+        'description' => get_setting('site_description', 'Media Informasi, Inspirasi dan Inovatif'),
+        'potentialAction' => [
+            '@type' => 'SearchAction',
+            'target' => base_url('cari?q={search_term_string}'),
+            'query-input' => 'required name=search_term_string'
+        ]
+    ];
+    ?>
+    <script type="application/ld+json">
+    <?= json_encode($schemaWebsite, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) ?>
+    </script>
+    <?php endif; ?>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

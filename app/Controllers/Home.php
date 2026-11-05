@@ -50,6 +50,11 @@ class Home extends BaseController
         $data = [
             'title'            => get_setting('site_title', 'PACEKO.com') . ' - ' . get_setting('site_tagline', 'Media Informasi, Inspirasi dan Inovatif'),
             'metaDescription'  => get_setting('site_description', 'Portal berita terdepan menyajikan berita terkini, peristiwa, sosial, politik, pemerintahan, dan inspirasi.'),
+            'ogTitle'          => get_setting('site_title', 'PACEKO.com') . ' - ' . get_setting('site_tagline', 'Media Informasi, Inspirasi dan Inovatif'),
+            'ogDescription'    => get_setting('site_description', 'Portal berita terdepan menyajikan berita terkini, peristiwa, sosial, politik, pemerintahan, dan inspirasi.'),
+            'ogImage'          => base_url('assets/images/og-default.jpg'),
+            'ogType'           => 'website',
+            'ogUrl'            => base_url(),
             'sliderPosts'      => $sliderPosts,
             'breakingNews'     => $breakingNews,
             'popularPosts'     => $popularPosts,
@@ -92,9 +97,21 @@ class Home extends BaseController
         $navCategories  = $this->categoryModel->getTopCategories(9);
         $allCategories  = $this->categoryModel->getAllCategories();
 
+        $postImage = get_og_image($post);
+        $cleanDesc = !empty($post['post_excerpt']) ? strip_tags($post['post_excerpt']) : clean_excerpt($post['post_content'], 160);
+
         $data = [
             'title'           => esc($post['post_title']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
-            'metaDescription' => esc(clean_excerpt($post['post_content'], 150)),
+            'metaDescription' => esc($cleanDesc),
+            'ogTitle'         => esc($post['post_title']),
+            'ogDescription'   => esc($cleanDesc),
+            'ogImage'         => $postImage,
+            'ogType'          => 'article',
+            'ogUrl'           => current_url(),
+            'publishedTime'   => $post['post_date'],
+            'modifiedTime'    => $post['post_modified'] ?? $post['post_date'],
+            'author'          => $post['author_name'] ?? 'Redaksi PACEKO',
+            'section'         => $post['category_name'] ?? 'Berita',
             'post'            => $post,
             'relatedPosts'    => $relatedPosts,
             'popularPosts'    => $popularPosts,
@@ -133,9 +150,17 @@ class Home extends BaseController
         $navCategories  = $this->categoryModel->getTopCategories(9);
         $allCategories  = $this->categoryModel->getAllCategories();
 
+        $catImage = !empty($posts[0]) ? get_og_image($posts[0]) : base_url('assets/images/og-default.jpg');
+        $catDesc = 'Kumpulan berita terkini seputar ' . esc($category['name']) . ' di ' . get_setting('site_title', 'PACEKO.com');
+
         $data = [
             'title'           => 'Berita Kategori ' . esc($category['name']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
-            'metaDescription' => 'Kumpulan berita terkini seputar ' . esc($category['name']) . ' di ' . get_setting('site_title', 'PACEKO.com'),
+            'metaDescription' => $catDesc,
+            'ogTitle'         => 'Berita ' . esc($category['name']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
+            'ogDescription'   => $catDesc,
+            'ogImage'         => $catImage,
+            'ogType'          => 'website',
+            'ogUrl'           => current_url(),
             'category'        => $category,
             'posts'           => $posts,
             'currentPage'     => $page,
@@ -179,6 +204,11 @@ class Home extends BaseController
         $data = [
             'title'           => 'Hasil Pencarian: "' . esc($keyword) . '" - ' . get_setting('site_title', 'PACEKO.com'),
             'metaDescription' => 'Hasil pencarian berita untuk kata kunci ' . esc($keyword),
+            'ogTitle'         => 'Pencarian: ' . esc($keyword) . ' - ' . get_setting('site_title', 'PACEKO.com'),
+            'ogDescription'   => 'Hasil pencarian berita untuk kata kunci ' . esc($keyword),
+            'ogImage'         => base_url('assets/images/og-default.jpg'),
+            'ogType'          => 'website',
+            'ogUrl'           => current_url(),
             'keyword'         => $keyword,
             'posts'           => $posts,
             'currentPage'     => $page,
@@ -277,12 +307,19 @@ class Home extends BaseController
         $allCategories = $this->categoryModel->getAllCategories();
         $breakingNews  = $this->postModel->getBreakingNews(8);
 
+        $desc = clean_excerpt($page['post_content'], 160);
         $data = [
-            'title'         => esc($page['post_title']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
-            'page'          => $page,
-            'navCategories' => $navCategories,
-            'allCategories' => $allCategories,
-            'breakingNews'  => $breakingNews,
+            'title'           => esc($page['post_title']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
+            'metaDescription' => esc($desc),
+            'ogTitle'         => esc($page['post_title']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
+            'ogDescription'   => esc($desc),
+            'ogImage'         => base_url('assets/images/og-default.jpg'),
+            'ogType'          => 'article',
+            'ogUrl'           => current_url(),
+            'page'            => $page,
+            'navCategories'   => $navCategories,
+            'allCategories'   => $allCategories,
+            'breakingNews'    => $breakingNews,
         ];
 
         return view('pages/dynamic', $data);

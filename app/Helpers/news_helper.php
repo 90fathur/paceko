@@ -71,6 +71,22 @@ if (!function_exists('get_post_image')) {
     }
 }
 
+if (!function_exists('get_og_image')) {
+    /**
+     * Get 100% WhatsApp & Facebook compatible Open Graph share image URL
+     */
+    function get_og_image($post = null): string
+    {
+        if (!empty($post)) {
+            $img = get_post_image($post);
+            if (!empty($img) && preg_match('/\.(jpg|jpeg|png|webp)($|\?)/i', $img)) {
+                return $img;
+            }
+        }
+        return base_url('assets/images/og-default.jpg');
+    }
+}
+
 if (!function_exists('format_indo_date')) {
     function format_indo_date($datetime, bool $withTime = false): string
     {
@@ -132,6 +148,8 @@ if (!function_exists('clean_excerpt')) {
         $text = preg_replace('/\[.*?\]/', '', $content);
         // Strip HTML
         $text = strip_tags($text);
+        // Decode HTML entities
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         // Replace multiple whitespace
         $text = preg_replace('/\s+/', ' ', $text);
         $text = trim($text);
