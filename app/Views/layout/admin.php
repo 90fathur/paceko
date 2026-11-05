@@ -131,19 +131,25 @@
 
         /* Mobile Offcanvas Sidebar */
         .admin-sidebar-offcanvas {
-            width: 260px !important;
+            width: 270px !important;
             background-color: var(--admin-sidebar-bg) !important;
             color: #94a3b8;
             border-right: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.45) !important;
         }
         .admin-sidebar-offcanvas .sidebar-brand {
             padding: 16px 20px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.25);
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
         .admin-sidebar-offcanvas .sidebar-brand img {
             max-height: 32px;
             filter: brightness(0) invert(1);
+        }
+        .admin-sidebar-offcanvas .sidebar-menu {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-bottom: 20px;
         }
 
         /* Main Content Container */
@@ -309,15 +315,17 @@
         <!-- Topbar -->
         <header class="admin-topbar">
             <div class="d-flex align-items-center gap-2">
-                <!-- Hamburger Button for Mobile Sidebar -->
-                <button class="btn btn-light border btn-compact d-lg-none d-flex align-items-center justify-content-center p-2 rounded-2 me-1 shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar" aria-controls="adminMobileSidebar" title="Buka Menu Sidebar">
-                    <i class="fa-solid fa-bars fs-6 text-dark"></i>
+                <!-- Hamburger Button for Mobile Sidebar (Top Left) -->
+                <button class="btn btn-outline-danger btn-compact d-lg-none d-inline-flex align-items-center gap-1 shadow-sm px-2 py-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar" aria-controls="adminMobileSidebar" title="Buka Menu Sidebar">
+                    <i class="fa-solid fa-bars fs-6"></i>
+                    <span class="fw-bold" style="font-size: 0.75rem;">Menu</span>
                 </button>
 
-                <a href="<?= base_url() ?>" target="_blank" class="btn btn-outline-danger btn-compact d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-globe"></i> Portal Berita
+                <a href="<?= base_url() ?>" target="_blank" class="btn btn-outline-secondary btn-compact d-flex align-items-center gap-1" title="Buka Website PACEKO">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="d-none d-sm-inline">Portal Berita</span>
                 </a>
-                <span class="text-muted d-none d-sm-inline" style="font-size: 0.75rem;">• Portal Berita Profesional PACEKO</span>
+                <span class="text-muted d-none d-md-inline" style="font-size: 0.75rem;">• Portal Berita Profesional PACEKO</span>
             </div>
 
             <div class="d-flex align-items-center gap-3">
@@ -379,6 +387,17 @@
     </div>
 </div>
 
+<!-- Floating Mobile Menu Button (Bottom-Right, thumb-friendly) -->
+<button class="btn btn-danger rounded-circle shadow-lg d-lg-none position-fixed d-flex align-items-center justify-content-center" 
+        style="bottom: 22px; right: 22px; width: 48px; height: 48px; z-index: 1040; box-shadow: 0 4px 18px rgba(229, 9, 20, 0.5) !important;" 
+        type="button" 
+        data-bs-toggle="offcanvas" 
+        data-bs-target="#adminMobileSidebar" 
+        aria-controls="adminMobileSidebar" 
+        title="Buka Menu Admin">
+    <i class="fa-solid fa-bars fs-5 text-white"></i>
+</button>
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -387,6 +406,17 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 
 <script>
+    // Ensure mobile offcanvas opens smoothly on all devices
+    $(document).ready(function() {
+        $('[data-bs-target="#adminMobileSidebar"]').on('click', function(e) {
+            var el = document.getElementById('adminMobileSidebar');
+            if (el && typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+                var bsOff = bootstrap.Offcanvas.getInstance(el) || new bootstrap.Offcanvas(el);
+                bsOff.show();
+            }
+        });
+    });
+
     function confirmDelete(url, title = 'Apakah Anda yakin ingin menghapus data ini?') {
         Swal.fire({
             title: 'Konfirmasi Hapus',
