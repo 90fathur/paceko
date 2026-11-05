@@ -204,13 +204,38 @@
         /* Brand Bar */
         .brand-bar {
             background-color: #ffffff;
-            padding: 16px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--paceko-border);
         }
+        .brand-logo {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
         .brand-logo img {
-            max-height: 52px;
+            max-height: 46px;
             width: auto;
             object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .brand-logo:hover img {
+            transform: scale(1.02);
+        }
+        .paceko-ad-header {
+            margin: 0 !important;
+        }
+        .paceko-ad-header img {
+            max-height: 68px !important;
+            width: auto;
+            object-fit: contain;
+        }
+        @media (max-width: 767.98px) {
+            .brand-bar {
+                padding: 6px 0;
+            }
+            .brand-logo img {
+                max-height: 38px;
+            }
         }
 
         /* Running Text Ticker */
@@ -737,15 +762,15 @@
     <header class="brand-bar">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-4 col-md-5 col-9">
-                    <a href="<?= base_url() ?>" class="brand-logo d-flex align-items-center gap-3">
+                <div class="col-lg-auto col-md-auto col-8">
+                    <a href="<?= base_url() ?>" class="brand-logo d-inline-flex align-items-center">
                         <img src="<?= base_url(get_setting('site_logo', 'assets/images/logo.png')) ?>" alt="<?= esc(get_setting('site_title', 'PACEKO.com')) ?>" class="img-fluid">
                     </a>
                 </div>
 
                 <!-- Header Banner (728x90 slot) -->
-                <div class="col-lg-8 col-md-7 col-3 d-flex justify-content-end align-items-center gap-3">
-                    <div class="d-none d-md-block flex-grow-1" style="max-width: 580px;">
+                <div class="col-lg col-md col-4 d-flex justify-content-end align-items-center gap-3">
+                    <div class="d-none d-md-block flex-grow-1 text-end" style="max-width: 580px;">
                         <?= render_banner('header', ['class' => 'my-0 text-end']) ?>
                     </div>
 

@@ -338,6 +338,10 @@ if (!function_exists('render_banner')) {
 
         $spec = $specs[$position] ?? ['width' => 728, 'height' => 90, 'label' => 'Banner Iklan (' . $position . ')', 'min_h' => 80];
 
+        $isHeader = ($position === 'header');
+        $slotClass = !empty($extraClass) ? esc($extraClass) : ($isHeader ? 'my-0 text-end' : 'my-3 text-center');
+        $bannerHeight = $isHeader ? 68 : $spec['height'];
+
         // 1. If active banner exists in database, render it
         if (!empty($banners)) {
             $b = $banners[0];
@@ -345,13 +349,15 @@ if (!function_exists('render_banner')) {
             $title = esc($b['title']);
             $imgUrl = base_url($b['image_url']);
 
-            $html = '<div class="paceko-ad-slot paceko-ad-' . esc($position) . ' ' . esc($extraClass) . ' my-3 text-center">';
-            $html .= '<div class="d-flex align-items-center justify-content-between mb-1 px-1">';
-            $html .= '<span class="text-uppercase text-muted" style="font-size: 0.65rem; letter-spacing: 0.05em;"><i class="fa-solid fa-rectangle-ad text-danger me-1"></i> Iklan Sponsor</span>';
-            $html .= '<span class="badge bg-light text-secondary border font-monospace" style="font-size: 0.6rem;">' . esc($spec['label']) . '</span>';
-            $html .= '</div>';
-            $html .= '<a href="' . $target . '" target="_blank" rel="noopener sponsored" title="' . $title . '" class="d-inline-block w-100 shadow-sm rounded overflow-hidden ad-banner-link">';
-            $html .= '<img src="' . $imgUrl . '" alt="' . $title . '" class="img-fluid w-100 h-auto rounded border" style="max-height:' . $spec['height'] . 'px; object-fit: contain;">';
+            $html = '<div class="paceko-ad-slot paceko-ad-' . esc($position) . ' ' . $slotClass . '">';
+            if (!$isHeader) {
+                $html .= '<div class="d-flex align-items-center justify-content-between mb-1 px-1">';
+                $html .= '<span class="text-uppercase text-muted" style="font-size: 0.65rem; letter-spacing: 0.05em;"><i class="fa-solid fa-rectangle-ad text-danger me-1"></i> Iklan Sponsor</span>';
+                $html .= '<span class="badge bg-light text-secondary border font-monospace" style="font-size: 0.6rem;">' . esc($spec['label']) . '</span>';
+                $html .= '</div>';
+            }
+            $html .= '<a href="' . $target . '" target="_blank" rel="noopener sponsored" title="' . $title . '" class="d-inline-block shadow-sm rounded overflow-hidden ad-banner-link" style="' . ($isHeader ? 'max-width: 100%; vertical-align: middle;' : 'width: 100%;') . '">';
+            $html .= '<img src="' . $imgUrl . '" alt="' . $title . '" class="img-fluid rounded border" style="max-height:' . $bannerHeight . 'px; object-fit: contain;">';
             $html .= '</a>';
             $html .= '</div>';
             return $html;
@@ -360,7 +366,20 @@ if (!function_exists('render_banner')) {
         // 2. If no active banner, render interactive vacancy placeholder
         if ($showPlaceholder) {
             $contactUrl = base_url('kontak');
-            $html = '<div class="paceko-ad-slot paceko-ad-placeholder paceko-ad-' . esc($position) . ' ' . esc($extraClass) . ' my-3 text-center">';
+            if ($isHeader) {
+                $html = '<div class="paceko-ad-slot paceko-ad-placeholder paceko-ad-' . esc($position) . ' ' . $slotClass . '">';
+                $html .= '<a href="' . $contactUrl . '" class="ad-placeholder-box d-flex align-items-center justify-content-between px-3 py-2 text-decoration-none rounded-2 border border-dashed" style="height: 56px; background: #f8fafc;">';
+                $html .= '<div class="d-flex align-items-center gap-2">';
+                $html .= '<i class="fa-solid fa-rectangle-ad text-danger"></i>';
+                $html .= '<span class="fw-semibold text-dark small" style="font-size: 0.8rem;">Pasang Banner Header (728×90)</span>';
+                $html .= '</div>';
+                $html .= '<span class="btn btn-outline-danger btn-sm py-0 px-2 fw-semibold" style="font-size: 0.7rem;"><i class="fa-solid fa-envelope me-1"></i> Pasang Iklan</span>';
+                $html .= '</a>';
+                $html .= '</div>';
+                return $html;
+            }
+
+            $html = '<div class="paceko-ad-slot paceko-ad-placeholder paceko-ad-' . esc($position) . ' ' . $slotClass . '">';
             $html .= '<div class="d-flex align-items-center justify-content-between mb-1 px-1">';
             $html .= '<span class="text-uppercase text-danger fw-bold" style="font-size: 0.65rem; letter-spacing: 0.05em;"><i class="fa-solid fa-bullhorn me-1"></i> Slot Iklan Tersedia</span>';
             $html .= '<span class="badge bg-light text-secondary border font-monospace" style="font-size: 0.6rem;">' . esc($spec['label']) . '</span>';
