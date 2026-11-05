@@ -6,7 +6,7 @@
     <!-- SEO & Metadata -->
     <title><?= esc($title ?? get_setting('site_title', 'PACEKO.com') . ' - ' . get_setting('site_tagline', 'Media Informasi, Inspirasi dan Inovatif')) ?></title>
     <meta name="description" content="<?= esc($metaDescription ?? get_setting('site_description', 'Portal Berita Terkini, Akurat, dan Terpercaya - PACEKO.com')) ?>">
-    <meta name="keywords" content="<?= esc(get_setting('site_keywords', 'paceko, berita sulbar, berita polman, berita polewali mandar sulawesi barat')) ?>">
+    <meta name="keywords" content="<?= esc($metaKeywords ?? get_setting('site_keywords', 'paceko, berita sulbar, berita polman, berita polewali mandar sulawesi barat')) ?>">
     <meta name="author" content="<?= esc($author ?? get_setting('site_title', 'PACEKO.com')) ?>">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="<?= esc($ogUrl ?? current_url()) ?>">

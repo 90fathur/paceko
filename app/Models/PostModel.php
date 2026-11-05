@@ -48,7 +48,12 @@ class PostModel extends Model
                 (SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_thumbnail" LIMIT 1),
                 (SELECT pm_file.meta_value FROM wp_postmeta pm_thumb JOIN wp_postmeta pm_file ON pm_thumb.meta_value = pm_file.post_id AND pm_file.meta_key = "_wp_attached_file" WHERE pm_thumb.post_id = p.ID AND pm_thumb.meta_key = "_thumbnail_id" LIMIT 1),
                 ""
-            ) as file_path
+            ) as file_path,
+            COALESCE((SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_image_caption" LIMIT 1), "") as image_caption,
+            COALESCE((SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_tags" LIMIT 1), "") as tags,
+            COALESCE((SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_seo_title" LIMIT 1), "") as seo_title,
+            COALESCE((SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_seo_description" LIMIT 1), "") as seo_description,
+            COALESCE((SELECT meta_value FROM wp_postmeta WHERE post_id = p.ID AND meta_key = "_ci_seo_keywords" LIMIT 1), "") as seo_keywords
         ');
 
         $builder->where('p.post_type', 'post');
@@ -366,6 +371,23 @@ class PostModel extends Model
             'meta_value' => '1'
         ]);
 
+        // Save smart metadata (Image caption, Tags, SEO)
+        if (isset($data['image_caption'])) {
+            $this->updatePostMeta($postId, '_ci_image_caption', trim((string)$data['image_caption']));
+        }
+        if (isset($data['tags'])) {
+            $this->updatePostMeta($postId, '_ci_tags', trim((string)$data['tags']));
+        }
+        if (isset($data['seo_title'])) {
+            $this->updatePostMeta($postId, '_ci_seo_title', trim((string)$data['seo_title']));
+        }
+        if (isset($data['seo_description'])) {
+            $this->updatePostMeta($postId, '_ci_seo_description', trim((string)$data['seo_description']));
+        }
+        if (isset($data['seo_keywords'])) {
+            $this->updatePostMeta($postId, '_ci_seo_keywords', trim((string)$data['seo_keywords']));
+        }
+
         return $postId;
     }
 
@@ -440,7 +462,49 @@ class PostModel extends Model
             }
         }
 
+        // Save smart metadata (Image caption, Tags, SEO)
+        if (isset($data['image_caption'])) {
+            $this->updatePostMeta($id, '_ci_image_caption', trim((string)$data['image_caption']));
+        }
+        if (isset($data['tags'])) {
+            $this->updatePostMeta($id, '_ci_tags', trim((string)$data['tags']));
+        }
+        if (isset($data['seo_title'])) {
+            $this->updatePostMeta($id, '_ci_seo_title', trim((string)$data['seo_title']));
+        }
+        if (isset($data['seo_description'])) {
+            $this->updatePostMeta($id, '_ci_seo_description', trim((string)$data['seo_description']));
+        }
+        if (isset($data['seo_keywords'])) {
+            $this->updatePostMeta($id, '_ci_seo_keywords', trim((string)$data['seo_keywords']));
+        }
+
         return true;
+    }
+
+    /**
+     * Helper to insert or update single meta key in wp_postmeta
+     */
+    public function updatePostMeta(int $postId, string $key, ?string $value): void
+    {
+        $value = $value ?? '';
+        $existing = $this->db->table('wp_postmeta')
+            ->where('post_id', $postId)
+            ->where('meta_key', $key)
+            ->get()->getRow();
+
+        if ($existing) {
+            $this->db->table('wp_postmeta')
+                ->where('post_id', $postId)
+                ->where('meta_key', $key)
+                ->update(['meta_value' => $value]);
+        } else {
+            $this->db->table('wp_postmeta')->insert([
+                'post_id'    => $postId,
+                'meta_key'   => $key,
+                'meta_value' => $value
+            ]);
+        }
     }
 
     /**

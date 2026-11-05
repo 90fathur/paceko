@@ -55,10 +55,14 @@
                     </div>
                 </div>
 
-                <!-- Featured Image -->
-                <div class="mb-4 rounded-4 overflow-hidden shadow-sm">
+                <!-- Featured Image with Smart Caption -->
+                <figure class="mb-4 rounded-4 overflow-hidden shadow-sm border bg-light">
                     <img src="<?= get_post_image($post) ?>" alt="<?= esc($post['post_title']) ?>" class="img-fluid w-100" style="max-height: 480px; object-fit: cover;">
-                </div>
+                    <figcaption class="figure-caption text-secondary small py-2 px-3 bg-light border-top d-flex align-items-center justify-content-between">
+                        <span><i class="fa-solid fa-camera text-danger me-1"></i> <?= esc(get_image_caption($post)) ?></span>
+                        <span class="badge bg-white text-secondary border font-monospace" style="font-size: 0.65rem;">PACEKO</span>
+                    </figcaption>
+                </figure>
 
                 <!-- Social Share Bar (Top) -->
                 <?php
@@ -107,22 +111,16 @@
                 <!-- In-Article Sponsor Banner (728x90) -->
                 <?= render_banner('in_article', ['class' => 'my-4']) ?>
 
-                <!-- Category Tag Pills -->
+                <!-- Dynamic Article Tags / Topik Terkait -->
+                <?php $articleTags = get_post_tags($post); ?>
                 <div class="mt-5 pt-4 border-top">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <span class="fw-bold small text-secondary"><i class="fa-solid fa-tags text-danger me-1"></i> Topik Terkait:</span>
-                        <a href="<?= base_url('kategori/' . esc($post['category_slug'])) ?>" class="badge bg-light text-dark border p-2 text-decoration-none">
-                            #<?= esc($post['category_name']) ?>
-                        </a>
-                        <a href="<?= base_url('kategori/sulbar') ?>" class="badge bg-light text-dark border p-2 text-decoration-none">
-                            #SulawesiBarat
-                        </a>
-                        <a href="<?= base_url('kategori/polman') ?>" class="badge bg-light text-dark border p-2 text-decoration-none">
-                            #PolewaliMandar
-                        </a>
-                        <a href="<?= base_url('kategori/berita') ?>" class="badge bg-light text-dark border p-2 text-decoration-none">
-                            #PACEKO
-                        </a>
+                        <?php foreach ($articleTags as $tag): ?>
+                            <a href="<?= base_url('cari?q=' . urlencode($tag)) ?>" class="badge bg-light text-dark border p-2 text-decoration-none rounded-pill shadow-xs transition-all hover-danger">
+                                #<?= esc($tag) ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 

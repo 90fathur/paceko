@@ -201,6 +201,13 @@
             border-radius: 5px;
             font-weight: 600;
         }
+        .btn-xs {
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
         .badge-compact {
             font-size: 0.6875rem;
             padding: 3px 6px;

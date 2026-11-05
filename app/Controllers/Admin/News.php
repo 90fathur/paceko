@@ -106,12 +106,17 @@ class News extends BaseController
             }
 
             $postData = [
-                'title'     => $this->request->getPost('title'),
-                'slug'      => $this->request->getPost('slug'),
-                'excerpt'   => $this->request->getPost('excerpt'),
-                'content'   => $content,
-                'status'    => $this->request->getPost('status'),
-                'author_id' => session()->get('user_id') ?? 1
+                'title'           => $this->request->getPost('title'),
+                'slug'            => $this->request->getPost('slug'),
+                'excerpt'         => $this->request->getPost('excerpt'),
+                'content'         => $content,
+                'status'          => $this->request->getPost('status'),
+                'author_id'       => session()->get('user_id') ?? 1,
+                'image_caption'   => $this->request->getPost('image_caption'),
+                'tags'            => $this->request->getPost('tags'),
+                'seo_title'       => $this->request->getPost('seo_title'),
+                'seo_description' => $this->request->getPost('seo_description'),
+                'seo_keywords'    => $this->request->getPost('seo_keywords'),
             ];
 
             $categoryId = (int)$this->request->getPost('category_id');
@@ -189,11 +194,16 @@ class News extends BaseController
             }
 
             $postData = [
-                'title'   => $this->request->getPost('title'),
-                'slug'    => $this->request->getPost('slug'),
-                'excerpt' => $this->request->getPost('excerpt'),
-                'content' => $content,
-                'status'  => $this->request->getPost('status'),
+                'title'           => $this->request->getPost('title'),
+                'slug'            => $this->request->getPost('slug'),
+                'excerpt'         => $this->request->getPost('excerpt'),
+                'content'         => $content,
+                'status'          => $this->request->getPost('status'),
+                'image_caption'   => $this->request->getPost('image_caption'),
+                'tags'            => $this->request->getPost('tags'),
+                'seo_title'       => $this->request->getPost('seo_title'),
+                'seo_description' => $this->request->getPost('seo_description'),
+                'seo_keywords'    => $this->request->getPost('seo_keywords'),
             ];
 
             $categoryId = (int)$this->request->getPost('category_id');

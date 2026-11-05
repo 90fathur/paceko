@@ -98,12 +98,20 @@ class Home extends BaseController
         $allCategories  = $this->categoryModel->getAllCategories();
 
         $postImage = get_og_image($post);
-        $cleanDesc = !empty($post['post_excerpt']) ? strip_tags($post['post_excerpt']) : clean_excerpt($post['post_content'], 160);
+        
+        // Smart SEO Fallbacks
+        $cleanDesc = !empty($post['seo_description'])
+            ? trim(strip_tags($post['seo_description']))
+            : (!empty($post['post_excerpt']) ? strip_tags($post['post_excerpt']) : clean_excerpt($post['post_content'], 160));
+
+        $seoTitle = !empty($post['seo_title']) ? trim($post['seo_title']) : $post['post_title'];
+        $metaKeywords = !empty($post['seo_keywords']) ? trim($post['seo_keywords']) : (!empty($post['tags']) ? trim($post['tags']) : null);
 
         $data = [
-            'title'           => esc($post['post_title']) . ' - ' . get_setting('site_title', 'PACEKO.com'),
+            'title'           => esc($seoTitle) . ' - ' . get_setting('site_title', 'PACEKO.com'),
             'metaDescription' => esc($cleanDesc),
-            'ogTitle'         => esc($post['post_title']),
+            'metaKeywords'    => $metaKeywords,
+            'ogTitle'         => esc($seoTitle),
             'ogDescription'   => esc($cleanDesc),
             'ogImage'         => $postImage,
             'ogType'          => 'article',

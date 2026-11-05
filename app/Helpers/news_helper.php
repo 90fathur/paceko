@@ -87,6 +87,54 @@ if (!function_exists('get_og_image')) {
     }
 }
 
+if (!function_exists('get_image_caption')) {
+    /**
+     * Get intelligent image caption / photo source with contextual fallback
+     */
+    function get_image_caption($post): string
+    {
+        if (is_array($post) && !empty($post['image_caption'])) {
+            return trim($post['image_caption']);
+        }
+        if (is_object($post) && !empty($post->image_caption)) {
+            return trim($post->image_caption);
+        }
+
+        $category = is_array($post) ? ($post['category_name'] ?? 'Berita') : ($post->category_name ?? 'Berita');
+        return "Foto ilustrasi / Dokumentasi {$category} - PACEKO.com";
+    }
+}
+
+if (!function_exists('get_post_tags')) {
+    /**
+     * Parse article tags with smart fallbacks
+     * 
+     * @param array|object $post
+     * @return array
+     */
+    function get_post_tags($post): array
+    {
+        $rawTags = '';
+        if (is_array($post) && !empty($post['tags'])) {
+            $rawTags = $post['tags'];
+        } elseif (is_object($post) && !empty($post->tags)) {
+            $rawTags = $post->tags;
+        }
+
+        if (!empty($rawTags)) {
+            $tags = array_map('trim', explode(',', $rawTags));
+            $tags = array_filter($tags, fn($t) => !empty($t));
+            if (!empty($tags)) {
+                return array_values(array_unique($tags));
+            }
+        }
+
+        // Smart fallback tags based on category & region
+        $cat = is_array($post) ? ($post['category_name'] ?? 'Berita') : ($post->category_name ?? 'Berita');
+        return array_unique([$cat, 'Polewali Mandar', 'Sulawesi Barat', 'PACEKO']);
+    }
+}
+
 if (!function_exists('format_indo_date')) {
     function format_indo_date($datetime, bool $withTime = false): string
     {
