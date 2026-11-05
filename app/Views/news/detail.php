@@ -30,9 +30,12 @@
                 </h1>
 
                 <!-- Lead/Excerpt if available -->
-                <?php if (!empty($post['post_excerpt'])): ?>
+                <?php 
+                $cleanLead = !empty($post['post_excerpt']) ? clean_excerpt($post['post_excerpt'], 300) : ''; 
+                ?>
+                <?php if (!empty($cleanLead)): ?>
                     <p class="lead text-secondary fw-normal mb-4" style="font-size: 1.15rem; line-height: 1.6;">
-                        <?= esc($post['post_excerpt']) ?>
+                        <?= esc($cleanLead) ?>
                     </p>
                 <?php endif; ?>
 

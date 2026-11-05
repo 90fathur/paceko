@@ -199,16 +199,53 @@ if (!function_exists('time_ago_id')) {
 }
 
 if (!function_exists('clean_excerpt')) {
-    function clean_excerpt($content, int $length = 130): string
+    /**
+     * Clean excerpt from HTML, shortcodes, and Microsoft Word/CSS artifacts
+     */
+    function clean_excerpt($content, int $length = 140): string
     {
         if (empty($content)) return '';
-        // Remove shortcodes
-        $text = preg_replace('/\[.*?\]/', '', $content);
-        // Strip HTML
+
+        // 1. Remove entire <style>...</style> blocks and their contents
+        $text = preg_replace('#<style\b[^>]*>.*?</style>#is', '', $content);
+
+        // 2. Remove entire <script>...</script> blocks and their contents
+        $text = preg_replace('#<script\b[^>]*>.*?</script>#is', '', $text);
+
+        // 3. Remove entire <xml>...</xml> blocks and their contents
+        $text = preg_replace('#<xml\b[^>]*>.*?</xml>#is', '', $text);
+
+        // 4. Remove MS Word conditional comments <!--[if ...]>...<![endif]-->
+        $text = preg_replace('#<!--\[if.*?<!\[endif\]-->#is', '', $text);
+
+        // 5. Remove standard HTML comments <!-- ... -->
+        $text = preg_replace('#<!--.*?-->#s', '', $text);
+
+        // 6. Remove WordPress shortcodes [caption]...[/caption]
+        $text = preg_replace('/\[.*?\]/', '', $text);
+
+        // 7. Strip all HTML tags
         $text = strip_tags($text);
-        // Decode HTML entities
+
+        // 8. Decode HTML entities
         $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        // Replace multiple whitespace
+
+        // 9. Clean any leftover raw MS Word / CSS artifacts if text was already stripped
+        // Remove CSS comments /* ... */
+        $text = preg_replace('/\/\*.*?\*\//s', '', $text);
+        // Remove CSS rule blocks { ... }
+        $text = preg_replace('/\{[^\}]*\}/s', '', $text);
+        // Remove CSS selectors like table.MsoNormalTable, p.MsoNormal, etc.
+        $text = preg_replace('/[a-zA-Z0-9\.\#\_\-]*\b(MsoNormalTable|MsoNormal|MsoListParagraph|MsoChpDefault)\b/i', '', $text);
+        // Remove Word locale/state flags: "Normal 0 false false false EN-US X-NONE X-NONE"
+        $text = preg_replace('/\bNormal\s+0\s+(false\s+|true\s+)+[A-Z]{2,4}-[A-Z]{2,4}\s+X-NONE\s+X-NONE\b/i', '', $text);
+        $text = preg_replace('/\b(X-NONE|EN-US|IN-ID|AR-SA)\b/i', '', $text);
+        $text = preg_replace('/\b(Normal\s+0\s+false\s+false\s+false)\b/i', '', $text);
+        $text = preg_replace('/\bmso-[a-zA-Z0-9\-]+:[^;]+;/i', '', $text);
+        $text = preg_replace('/\b(mso-style-[a-z0-9\-]+|widow-orphan|mso-[a-z0-9\-]+)\b/i', '', $text);
+
+        // 10. Normalize whitespace & invisible unicode characters
+        $text = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $text);
         $text = preg_replace('/\s+/', ' ', $text);
         $text = trim($text);
 
@@ -217,6 +254,27 @@ if (!function_exists('clean_excerpt')) {
         }
 
         return mb_substr($text, 0, $length) . '...';
+    }
+}
+
+if (!function_exists('sanitize_article_content')) {
+    /**
+     * Clean messy MS Word junk, inline style definition tags, and XML metadata from article content
+     */
+    function sanitize_article_content($content): string
+    {
+        if (empty($content)) return '';
+        // 1. Remove <style>...</style> blocks
+        $text = preg_replace('#<style\b[^>]*>.*?</style>#is', '', $content);
+        // 2. Remove <xml>...</xml> blocks
+        $text = preg_replace('#<xml\b[^>]*>.*?</xml>#is', '', $text);
+        // 3. Remove conditional comments <!--[if ...]>...<![endif]-->
+        $text = preg_replace('#<!--\[if.*?<!\[endif\]-->#is', '', $text);
+        // 4. Remove empty <o:p></o:p>
+        $text = preg_replace('#<o:p>.*?</o:p>#is', '', $text);
+        // 5. Remove Mso classes
+        $text = preg_replace('/\s+class="Mso[a-zA-Z0-9_\-]*"/i', '', $text);
+        return trim($text);
     }
 }
 

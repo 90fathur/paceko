@@ -78,7 +78,7 @@
                         <?= esc(!empty($news['seo_title']) ? $news['seo_title'] : $news['post_title']) ?> - PACEKO.com
                     </div>
                     <div class="text-secondary small" id="serpDescPreview" style="font-size: 0.82rem; line-height: 1.4; color: #4d5156 !important;">
-                        <?= esc(!empty($news['seo_description']) ? $news['seo_description'] : (!empty($news['post_excerpt']) ? $news['post_excerpt'] : clean_excerpt($news['post_content'], 140))) ?>
+                        <?= esc(!empty($news['seo_description']) ? clean_excerpt($news['seo_description'], 160) : (!empty($news['post_excerpt']) ? clean_excerpt($news['post_excerpt'], 160) : clean_excerpt($news['post_content'], 140))) ?>
                     </div>
                 </div>
 

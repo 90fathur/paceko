@@ -99,10 +99,20 @@ class Home extends BaseController
 
         $postImage = get_og_image($post);
         
-        // Smart SEO Fallbacks
-        $cleanDesc = !empty($post['seo_description'])
-            ? trim(strip_tags($post['seo_description']))
-            : (!empty($post['post_excerpt']) ? strip_tags($post['post_excerpt']) : clean_excerpt($post['post_content'], 160));
+        // Robust Multi-tier Clean Description (Immune to MS Word CSS/XML garbage & empty excerpts)
+        $cleanDesc = '';
+        if (!empty($post['seo_description'])) {
+            $cleanDesc = clean_excerpt($post['seo_description'], 160);
+        }
+        if (empty($cleanDesc) && !empty($post['post_excerpt'])) {
+            $cleanDesc = clean_excerpt($post['post_excerpt'], 160);
+        }
+        if (empty($cleanDesc) && !empty($post['post_content'])) {
+            $cleanDesc = clean_excerpt($post['post_content'], 160);
+        }
+        if (empty($cleanDesc)) {
+            $cleanDesc = 'Baca ulasan berita selengkapnya mengenai ' . strip_tags($post['post_title']) . ' di PACEKO.com - Portal Berita Inspiratif dan Terpercaya.';
+        }
 
         $seoTitle = !empty($post['seo_title']) ? trim($post['seo_title']) : $post['post_title'];
         $metaKeywords = !empty($post['seo_keywords']) ? trim($post['seo_keywords']) : (!empty($post['tags']) ? trim($post['tags']) : null);
