@@ -247,8 +247,10 @@ class Home extends BaseController
      */
     public function placeholder()
     {
-        $title = $this->request->getGet('title') ?? 'PACEKO';
-        $category = $this->request->getGet('cat') ?? 'Berita Terkini';
+        $rawTitle = strip_tags((string)($this->request->getGet('title') ?? 'PACEKO'));
+        $title = mb_substr(trim($rawTitle), 0, 80);
+        $rawCat = strip_tags((string)($this->request->getGet('cat') ?? 'Berita Terkini'));
+        $category = mb_substr(trim($rawCat), 0, 40);
         $id = (int)($this->request->getGet('id') ?? 1);
 
         $gradients = [
@@ -303,6 +305,7 @@ class Home extends BaseController
 
         return $this->response
             ->setHeader('Content-Type', 'image/svg+xml')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
             ->setHeader('Cache-Control', 'public, max-age=86400')
             ->setBody($svg);
     }
@@ -430,21 +433,36 @@ class Home extends BaseController
      */
     public function media(string ...$segments)
     {
-        $path = implode('/', $segments);
-        $path = str_replace(['../', '..\\'], '', $path);
+        // BSSN / OWASP: Prevent Directory Traversal & Arbitrary File Disclosure
+        $rawPath = implode('/', $segments);
+        
+        // Block null bytes or directory traversal patterns
+        if (strpos($rawPath, "\0") !== false || strpos($rawPath, '..') !== false || preg_match('/\.(php|phtml|phar|inc|env|sql|ini|sh|cgi|py)/i', $rawPath)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Akses ditolak.');
+        }
+
+        // Whitelist allowed media extensions only
+        $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf', 'mp4'];
+        $ext = strtolower(pathinfo($rawPath, PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowedExts, true)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Tipe berkas tidak diizinkan.');
+        }
+
+        // Sanitize path characters
+        $cleanPath = preg_replace('/[^a-zA-Z0-9_\-\.\/]/', '', $rawPath);
 
         $candidates = [
-            FCPATH . 'wp-content/uploads/' . $path,
-            FCPATH . '../wp-content/uploads/' . $path,
-            FCPATH . '../wordpress_lama/wp-content/uploads/' . $path,
-            FCPATH . '../wp_lama/wp-content/uploads/' . $path,
-            FCPATH . '../backup_wp/wp-content/uploads/' . $path,
-            FCPATH . 'uploads/' . $path,
+            FCPATH . 'wp-content/uploads/' . $cleanPath,
+            FCPATH . '../wp-content/uploads/' . $cleanPath,
+            FCPATH . '../wordpress_lama/wp-content/uploads/' . $cleanPath,
+            FCPATH . '../wp_lama/wp-content/uploads/' . $cleanPath,
+            FCPATH . '../backup_wp/wp-content/uploads/' . $cleanPath,
+            FCPATH . 'uploads/' . $cleanPath,
         ];
 
         foreach ($candidates as $cand) {
-            if (file_exists($cand) && is_file($cand)) {
-                $ext = strtolower(pathinfo($cand, PATHINFO_EXTENSION));
+            $real = realpath($cand);
+            if ($real && is_file($real)) {
                 $mimes = [
                     'jpg'  => 'image/jpeg',
                     'jpeg' => 'image/jpeg',
@@ -452,19 +470,22 @@ class Home extends BaseController
                     'gif'  => 'image/gif',
                     'webp' => 'image/webp',
                     'svg'  => 'image/svg+xml',
+                    'pdf'  => 'application/pdf',
+                    'mp4'  => 'video/mp4',
                 ];
-                $mime = $mimes[$ext] ?? 'image/jpeg';
+                $mime = $mimes[$ext] ?? 'application/octet-stream';
 
                 return $this->response
                     ->setHeader('Content-Type', $mime)
+                    ->setHeader('X-Content-Type-Options', 'nosniff')
                     ->setHeader('Cache-Control', 'public, max-age=2592000')
-                    ->setBody(file_get_contents($cand));
+                    ->setBody(file_get_contents($real));
             }
         }
 
         // On localhost, proxy/redirect to live server if missing
         if (ENVIRONMENT !== 'production' || strpos(base_url(), 'localhost') !== false) {
-            return redirect()->to('https://paceko.com/wp-content/uploads/' . $path);
+            return redirect()->to('https://paceko.com/wp-content/uploads/' . $cleanPath);
         }
 
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Media tidak ditemukan');

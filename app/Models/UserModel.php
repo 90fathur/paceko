@@ -48,12 +48,6 @@ class UserModel extends Model
             }
         }
 
-        // If default initial setup credential
-        if ($user['user_login'] === 'admin' && ($password === 'admin123' || $password === 'admin')) {
-            $this->updatePassword($user['ID'], $password);
-            return true;
-        }
-
         return false;
     }
 

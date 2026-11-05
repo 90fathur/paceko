@@ -30,9 +30,9 @@ class Banners extends BaseController
     public function store()
     {
         $rules = [
-            'title'    => 'required|min_length[3]|max_length[200]',
-            'position' => 'required|in_list[header,home_top,home_middle,sidebar,sidebar_bottom,in_article,after_article,footer]',
-            'banner_image' => 'uploaded[banner_image]|max_size[banner_image,5120]|is_image[banner_image]'
+            'title'        => 'required|min_length[3]|max_length[200]',
+            'position'     => 'required|in_list[header,home_top,home_middle,sidebar,sidebar_bottom,in_article,after_article,footer]',
+            'banner_image' => 'uploaded[banner_image]|max_size[banner_image,5120]|is_image[banner_image]|mime_in[banner_image,image/jpg,image/jpeg,image/png,image/webp,image/gif]'
         ];
 
         if (!$this->validate($rules)) {
@@ -67,6 +67,16 @@ class Banners extends BaseController
         $banner = $this->bannerModel->find((int)$id);
         if (!$banner) {
             return redirect()->to('/admin/banners')->with('error', 'Banner tidak ditemukan.');
+        }
+
+        $rules = [
+            'title'        => 'required|min_length[3]|max_length[200]',
+            'position'     => 'required|in_list[header,home_top,home_middle,sidebar,sidebar_bottom,in_article,after_article,footer]',
+            'banner_image' => 'permit_empty|max_size[banner_image,5120]|is_image[banner_image]|mime_in[banner_image,image/jpg,image/jpeg,image/png,image/webp,image/gif]'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $bannerData = [

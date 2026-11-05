@@ -74,10 +74,11 @@ class News extends BaseController
     public function store()
     {
         $rules = [
-            'title'       => 'required|min_length[5]|max_length[300]',
-            'category_id' => 'required|numeric',
-            'content'     => 'required|min_length[10]',
-            'status'      => 'required|in_list[publish,draft]',
+            'title'          => 'required|min_length[5]|max_length[300]',
+            'category_id'    => 'required|numeric',
+            'content'        => 'required|min_length[10]',
+            'status'         => 'required|in_list[publish,draft]',
+            'featured_image' => 'permit_empty|is_image[featured_image]|mime_in[featured_image,image/jpg,image/jpeg,image/png,image/webp]|max_size[featured_image,8192]',
         ];
 
         if (!$this->validate($rules)) {
@@ -162,10 +163,11 @@ class News extends BaseController
         }
 
         $rules = [
-            'title'       => 'required|min_length[5]|max_length[300]',
-            'category_id' => 'required|numeric',
-            'content'     => 'required|min_length[10]',
-            'status'      => 'required|in_list[publish,draft]',
+            'title'          => 'required|min_length[5]|max_length[300]',
+            'category_id'    => 'required|numeric',
+            'content'        => 'required|min_length[10]',
+            'status'         => 'required|in_list[publish,draft]',
+            'featured_image' => 'permit_empty|is_image[featured_image]|mime_in[featured_image,image/jpg,image/jpeg,image/png,image/webp]|max_size[featured_image,8192]',
         ];
 
         if (!$this->validate($rules)) {

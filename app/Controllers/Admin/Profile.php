@@ -38,6 +38,10 @@ class Profile extends BaseController
             return redirect()->back()->with('error', 'Nama dan Email wajib diisi.');
         }
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return redirect()->back()->with('error', 'Format alamat email tidak valid.');
+        }
+
         $this->userModel->updateProfile($userId, [
             'display_name' => $displayName,
             'user_email'   => $email
@@ -64,8 +68,9 @@ class Profile extends BaseController
             return redirect()->back()->with('error', 'Konfirmasi password baru tidak cocok.');
         }
 
-        if (strlen($newPassword) < 6) {
-            return redirect()->back()->with('error', 'Password minimal 6 karakter.');
+        // BSSN Standard: Minimum 8 characters for admin authentication
+        if (strlen($newPassword) < 8) {
+            return redirect()->back()->with('error', 'Password baru minimal 8 karakter sesuai standar keamanan.');
         }
 
         $user = $this->userModel->find($userId);

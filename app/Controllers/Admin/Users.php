@@ -33,7 +33,7 @@ class Users extends BaseController
             'username'     => 'required|min_length[3]|max_length[60]|is_unique[wp_users.user_login]',
             'display_name' => 'required|min_length[3]|max_length[100]',
             'email'        => 'required|valid_email|is_unique[wp_users.user_email]',
-            'password'     => 'required|min_length[6]'
+            'password'     => 'required|min_length[8]'
         ];
 
         if (!$this->validate($rules)) {
@@ -84,8 +84,8 @@ class Users extends BaseController
         }
 
         $newPassword = (string)$this->request->getPost('new_password');
-        if (strlen($newPassword) < 6) {
-            return redirect()->back()->with('error', 'Kata sandi minimal 6 karakter.');
+        if (strlen($newPassword) < 8) {
+            return redirect()->back()->with('error', 'Kata sandi baru minimal 8 karakter sesuai standar keamanan.');
         }
 
         $this->userModel->updatePassword((int)$id, $newPassword);

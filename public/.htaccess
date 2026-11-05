@@ -48,6 +48,30 @@ Options -Indexes
 ServerSignature Off
 # Disable server signature end
 
+# ----------------------------------------------------------------------
+# BSSN & OWASP Security Headers Hardening
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+    # 1. Prevent Clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # 2. Prevent MIME-sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # 3. Cross-Site Scripting Protection filter
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # 4. Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # 5. Restrict sensitive browser features / APIs
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # 6. Remove server information disclosure
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
 # Disable LiteSpeed / Apache ModSecurity WAF for rich text articles
 <IfModule mod_security.c>
     SecFilterEngine Off
