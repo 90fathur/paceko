@@ -46,6 +46,52 @@ if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
  * and fires up an environment-specific bootstrapping.
  */
 
+/*
+ *---------------------------------------------------------------
+ * MBSTRING POLYFILL (Fallback if host server disabled mbstring)
+ *---------------------------------------------------------------
+ */
+if (!function_exists('mb_strpos')) {
+    function mb_strpos(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): int|false {
+        return strpos($haystack, $needle, $offset);
+    }
+}
+if (!function_exists('mb_strrpos')) {
+    function mb_strrpos(string $haystack, string $needle, int $offset = 0, ?string $encoding = null): int|false {
+        return strrpos($haystack, $needle, $offset);
+    }
+}
+if (!function_exists('mb_substr')) {
+    function mb_substr(string $string, int $start, ?int $length = null, ?string $encoding = null): string {
+        return $length === null ? substr($string, $start) : substr($string, $start, $length);
+    }
+}
+if (!function_exists('mb_strlen')) {
+    function mb_strlen(string $string, ?string $encoding = null): int {
+        return strlen($string);
+    }
+}
+if (!function_exists('mb_strtolower')) {
+    function mb_strtolower(string $string, ?string $encoding = null): string {
+        return strtolower($string);
+    }
+}
+if (!function_exists('mb_strtoupper')) {
+    function mb_strtoupper(string $string, ?string $encoding = null): string {
+        return strtoupper($string);
+    }
+}
+if (!function_exists('mb_convert_encoding')) {
+    function mb_convert_encoding(array|string|null $string, string $to_encoding, array|string|null $from_encoding = null): array|string|false {
+        return $string;
+    }
+}
+if (!function_exists('mb_detect_encoding')) {
+    function mb_detect_encoding(string $string, array|string|null $encodings = null, bool $strict = false): string|false {
+        return 'UTF-8';
+    }
+}
+
 // LOAD OUR PATHS CONFIG FILE
 // This is the line that might need to be changed, depending on your folder structure.
 require FCPATH . '../app/Config/Paths.php';
