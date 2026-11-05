@@ -96,8 +96,18 @@ if (!function_exists('format_indo_date')) {
 
         $days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $months = [
-            1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            1 => 'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
         ];
 
         $dayName = $days[date('w', $timestamp)];
@@ -249,7 +259,7 @@ if (!function_exists('render_banner')) {
             $html .= '<span class="text-uppercase text-danger fw-bold" style="font-size: 0.65rem; letter-spacing: 0.05em;"><i class="fa-solid fa-bullhorn me-1"></i> Slot Iklan Tersedia</span>';
             $html .= '<span class="badge bg-light text-secondary border font-monospace" style="font-size: 0.6rem;">' . esc($spec['label']) . '</span>';
             $html .= '</div>';
-            
+
             $html .= '<a href="' . $contactUrl . '" class="ad-placeholder-box d-flex flex-column align-items-center justify-content-center p-3 text-decoration-none rounded-3 border border-2 border-dashed" style="min-height: ' . $spec['min_h'] . 'px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">';
             $html .= '<div class="d-flex align-items-center gap-2 mb-1 flex-wrap justify-content-center">';
             $html .= '<i class="fa-solid fa-rectangle-ad text-danger fs-5"></i>';
@@ -275,4 +285,3 @@ if (!function_exists('reading_time')) {
         return max(1, $minutes) . ' menit baca';
     }
 }
-

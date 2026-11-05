@@ -153,6 +153,15 @@ $(document).ready(function() {
         }
     });
 
+    // Ensure Summernote content is synced to textarea on form submit
+    $('form').on('submit', function() {
+        if ($('#contentEditor').summernote('isEmpty')) {
+            $('#contentEditor').val('');
+        } else {
+            $('#contentEditor').val($('#contentEditor').summernote('code'));
+        }
+    });
+
     function uploadSummernoteImage(file) {
         const formData = new FormData();
         formData.append('image', file);

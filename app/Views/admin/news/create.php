@@ -155,6 +155,15 @@ $(document).ready(function() {
         }
     });
 
+    // 4. Ensure Summernote content is synced to textarea on form submit
+    $('form').on('submit', function() {
+        if ($('#contentEditor').summernote('isEmpty')) {
+            $('#contentEditor').val('');
+        } else {
+            $('#contentEditor').val($('#contentEditor').summernote('code'));
+        }
+    });
+
     // Handler for uploading image into Summernote
     function uploadSummernoteImage(file) {
         const formData = new FormData();

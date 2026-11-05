@@ -84,32 +84,37 @@ class News extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $featuredImagePath = null;
-        $imageFile = $this->request->getFile('featured_image');
+        try {
+            $featuredImagePath = null;
+            $imageFile = $this->request->getFile('featured_image');
 
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $newName = $imageFile->getRandomName();
-            $uploadDir = FCPATH . 'uploads/news';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                $newName = $imageFile->getRandomName();
+                $uploadDir = FCPATH . 'uploads/news';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $imageFile->move($uploadDir, $newName);
+                $featuredImagePath = 'news/' . $newName;
             }
-            $imageFile->move($uploadDir, $newName);
-            $featuredImagePath = 'news/' . $newName;
+
+            $postData = [
+                'title'     => $this->request->getPost('title'),
+                'slug'      => $this->request->getPost('slug'),
+                'excerpt'   => $this->request->getPost('excerpt'),
+                'content'   => $this->request->getPost('content'),
+                'status'    => $this->request->getPost('status'),
+                'author_id' => session()->get('user_id') ?? 1
+            ];
+
+            $categoryId = (int)$this->request->getPost('category_id');
+            $postId = $this->postModel->createNews($postData, $featuredImagePath, $categoryId);
+
+            return redirect()->to('/admin/news')->with('success', 'Berita berhasil diterbitkan!');
+        } catch (\Throwable $e) {
+            log_message('error', 'Gagal menerbitkan berita: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Gagal menerbitkan berita: ' . $e->getMessage());
         }
-
-        $postData = [
-            'title'     => $this->request->getPost('title'),
-            'slug'      => $this->request->getPost('slug'),
-            'excerpt'   => $this->request->getPost('excerpt'),
-            'content'   => $this->request->getPost('content'),
-            'status'    => $this->request->getPost('status'),
-            'author_id' => session()->get('user_id') ?? 1
-        ];
-
-        $categoryId = (int)$this->request->getPost('category_id');
-        $postId = $this->postModel->createNews($postData, $featuredImagePath, $categoryId);
-
-        return redirect()->to('/admin/news')->with('success', 'Berita berhasil diterbitkan!');
     }
 
     /**
@@ -155,31 +160,36 @@ class News extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $featuredImagePath = null;
-        $imageFile = $this->request->getFile('featured_image');
+        try {
+            $featuredImagePath = null;
+            $imageFile = $this->request->getFile('featured_image');
 
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $newName = $imageFile->getRandomName();
-            $uploadDir = FCPATH . 'uploads/news';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                $newName = $imageFile->getRandomName();
+                $uploadDir = FCPATH . 'uploads/news';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $imageFile->move($uploadDir, $newName);
+                $featuredImagePath = 'news/' . $newName;
             }
-            $imageFile->move($uploadDir, $newName);
-            $featuredImagePath = 'news/' . $newName;
+
+            $postData = [
+                'title'   => $this->request->getPost('title'),
+                'slug'    => $this->request->getPost('slug'),
+                'excerpt' => $this->request->getPost('excerpt'),
+                'content' => $this->request->getPost('content'),
+                'status'  => $this->request->getPost('status'),
+            ];
+
+            $categoryId = (int)$this->request->getPost('category_id');
+            $this->postModel->updateNews((int)$id, $postData, $featuredImagePath, $categoryId);
+
+            return redirect()->to('/admin/news')->with('success', 'Berita berhasil diperbarui!');
+        } catch (\Throwable $e) {
+            log_message('error', 'Gagal memperbarui berita: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Gagal memperbarui berita: ' . $e->getMessage());
         }
-
-        $postData = [
-            'title'   => $this->request->getPost('title'),
-            'slug'    => $this->request->getPost('slug'),
-            'excerpt' => $this->request->getPost('excerpt'),
-            'content' => $this->request->getPost('content'),
-            'status'  => $this->request->getPost('status'),
-        ];
-
-        $categoryId = (int)$this->request->getPost('category_id');
-        $this->postModel->updateNews((int)$id, $postData, $featuredImagePath, $categoryId);
-
-        return redirect()->to('/admin/news')->with('success', 'Berita berhasil diperbarui!');
     }
 
     /**

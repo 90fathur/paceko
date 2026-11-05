@@ -241,6 +241,8 @@ class PostModel extends Model
         }
         if (!empty($filters['status'])) {
             $builder->where('p.post_status', $filters['status']);
+        } else {
+            $builder->whereIn('p.post_status', ['publish', 'draft']);
         }
         if (!empty($filters['category'])) {
             $builder->join('wp_term_relationships tr_adm', 'p.ID = tr_adm.object_id');
@@ -267,6 +269,8 @@ class PostModel extends Model
         }
         if (!empty($filters['status'])) {
             $builder->where('p.post_status', $filters['status']);
+        } else {
+            $builder->whereIn('p.post_status', ['publish', 'draft']);
         }
         if (!empty($filters['category'])) {
             $builder->join('wp_term_relationships tr', 'p.ID = tr.object_id', 'left');
