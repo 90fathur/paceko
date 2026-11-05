@@ -57,7 +57,7 @@ class PageModel extends Model
         }
 
         $insertData = [
-            'post_author'           => session()->get('user_id') ?? 1,
+            'post_author'           => !empty($data['author_id']) ? (int)$data['author_id'] : 1,
             'post_date'             => $now,
             'post_date_gmt'         => gmdate('Y-m-d H:i:s'),
             'post_content'          => $data['content'] ?? '',

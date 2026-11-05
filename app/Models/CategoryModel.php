@@ -99,6 +99,14 @@ class CategoryModel extends Model
     {
         $slug = !empty($slug) ? url_title($slug, '-', true) : url_title($name, '-', true);
 
+        // Ensure unique slug for other terms
+        $origSlug = $slug;
+        $counter = 1;
+        while ($this->where('slug', $slug)->where('term_id !=', $id)->first()) {
+            $slug = "{$origSlug}-{$counter}";
+            $counter++;
+        }
+
         $this->db->table('wp_terms')->where('term_id', $id)->update([
             'name' => $name,
             'slug' => $slug
@@ -116,7 +124,11 @@ class CategoryModel extends Model
      */
     public function deleteCategory(int $id): bool
     {
-        $this->db->table('wp_term_taxonomy')->where('term_id', $id)->where('taxonomy', 'category')->delete();
+        $tt = $this->db->table('wp_term_taxonomy')->where('term_id', $id)->where('taxonomy', 'category')->get()->getRow();
+        if ($tt) {
+            $this->db->table('wp_term_relationships')->where('term_taxonomy_id', $tt->term_taxonomy_id)->delete();
+            $this->db->table('wp_term_taxonomy')->where('term_taxonomy_id', $tt->term_taxonomy_id)->delete();
+        }
         $this->db->table('wp_terms')->where('term_id', $id)->delete();
         return true;
     }

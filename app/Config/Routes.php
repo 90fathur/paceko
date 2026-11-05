@@ -39,6 +39,7 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     $routes->get('news/edit/(:num)', 'Admin\News::edit/$1');
     $routes->post('news/update/(:num)', 'Admin\News::update/$1');
     $routes->get('news/delete/(:num)', 'Admin\News::delete/$1');
+    $routes->post('news/bulk-delete', 'Admin\News::bulkDelete');
     $routes->post('news/upload-image', 'Admin\News::uploadImage');
 
     // Categories Management

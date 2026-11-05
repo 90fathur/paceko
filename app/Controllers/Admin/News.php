@@ -202,8 +202,36 @@ class News extends BaseController
             return redirect()->to('/admin/news')->with('error', 'Berita tidak ditemukan.');
         }
 
-        $this->postModel->deleteNews((int)$id);
-        return redirect()->to('/admin/news')->with('success', 'Berita berhasil dihapus.');
+        try {
+            $this->postModel->deleteNews((int)$id);
+            return redirect()->to('/admin/news')->with('success', 'Berita berhasil dihapus.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus berita: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Bulk Delete News (Hapus Massal)
+     */
+    public function bulkDelete()
+    {
+        $postIds = $this->request->getPost('post_ids');
+        if (empty($postIds) || !is_array($postIds)) {
+            return redirect()->back()->with('error', 'Pilih minimal satu berita untuk dihapus.');
+        }
+
+        $cleanIds = array_filter(array_map('intval', $postIds));
+        if (empty($cleanIds)) {
+            return redirect()->back()->with('error', 'ID berita yang dipilih tidak valid.');
+        }
+
+        try {
+            $deletedCount = $this->postModel->bulkDeleteNews($cleanIds);
+            return redirect()->to('/admin/news')->with('success', "{$deletedCount} berita berhasil dihapus secara massal!");
+        } catch (\Throwable $e) {
+            log_message('error', 'Gagal hapus massal: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus berita terpilih: ' . $e->getMessage());
+        }
     }
 
     /**

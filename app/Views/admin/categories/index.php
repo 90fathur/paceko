@@ -135,7 +135,7 @@ function openEditCategory(id, name, slug, desc) {
     $('#editCatName').val(name);
     $('#editCatSlug').val(slug);
     $('#editCatDesc').val(desc);
-    $('#formEditCategory').attr('action', '<?= base_url('admin/categories/update/') ?>' + id);
+    $('#formEditCategory').attr('action', '<?= rtrim(base_url('admin/categories/update'), '/') ?>/' + id);
     new bootstrap.Modal(document.getElementById('modalEditCategory')).show();
 }
 </script>

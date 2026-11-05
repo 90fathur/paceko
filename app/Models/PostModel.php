@@ -17,6 +17,12 @@ class PostModel extends Model
         'comment_count'
     ];
 
+    public function __construct()
+    {
+        parent::__construct();
+        helper(['news', 'url', 'text']);
+    }
+
     /**
      * Base query for posts with subqueries for relational data (100% ONLY_FULL_GROUP_BY safe)
      */
@@ -299,7 +305,7 @@ class PostModel extends Model
         }
 
         $postData = [
-            'post_author'           => $data['author_id'] ?? session()->get('user_id') ?? 1,
+            'post_author'           => !empty($data['author_id']) ? (int)$data['author_id'] : 1,
             'post_date'             => $now,
             'post_date_gmt'         => gmdate('Y-m-d H:i:s'),
             'post_content'          => $data['content'] ?? '',
@@ -371,6 +377,14 @@ class PostModel extends Model
         $now = date('Y-m-d H:i:s');
         $slug = !empty($data['slug']) ? url_title($data['slug'], '-', true) : url_title($data['title'], '-', true);
 
+        // Ensure unique slug for other posts
+        $origSlug = $slug;
+        $counter = 1;
+        while ($this->where('post_name', $slug)->where('ID !=', $id)->first()) {
+            $slug = "{$origSlug}-{$counter}";
+            $counter++;
+        }
+
         $updateData = [
             'post_title'            => $data['title'],
             'post_name'             => $slug,
@@ -383,18 +397,25 @@ class PostModel extends Model
 
         $this->db->table('wp_posts')->where('ID', $id)->update($updateData);
 
-        // Update category
+        // Update category safely
         if ($categoryId) {
             $tt = $this->db->table('wp_term_taxonomy')
                 ->where('term_id', $categoryId)
                 ->where('taxonomy', 'category')
                 ->get()->getRow();
             if ($tt) {
-                $this->db->table('wp_term_relationships')->where('object_id', $id)->delete();
+                // Delete existing category taxonomy relationships for this post
+                $this->db->query("
+                    DELETE tr FROM wp_term_relationships tr
+                    JOIN wp_term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+                    WHERE tr.object_id = ? AND tt.taxonomy = 'category'
+                ", [$id]);
+
+                // Insert new category relationship
                 $this->db->table('wp_term_relationships')->insert([
-                    'object_id' => $id,
+                    'object_id'        => $id,
                     'term_taxonomy_id' => $tt->term_taxonomy_id,
-                    'term_order' => 0
+                    'term_order'       => 0
                 ]);
             }
         }
@@ -412,8 +433,8 @@ class PostModel extends Model
                     ->update(['meta_value' => $featuredImage]);
             } else {
                 $this->db->table('wp_postmeta')->insert([
-                    'post_id' => $id,
-                    'meta_key' => '_ci_thumbnail',
+                    'post_id'    => $id,
+                    'meta_key'   => '_ci_thumbnail',
                     'meta_value' => $featuredImage
                 ]);
             }
@@ -431,6 +452,22 @@ class PostModel extends Model
         $this->db->table('wp_postmeta')->where('post_id', $id)->delete();
         $this->db->table('wp_term_relationships')->where('object_id', $id)->delete();
         return true;
+    }
+
+    /**
+     * Admin: Bulk Delete Multiple Posts
+     */
+    public function bulkDeleteNews(array $ids): int
+    {
+        if (empty($ids)) {
+            return 0;
+        }
+
+        $this->db->table('wp_posts')->whereIn('ID', $ids)->delete();
+        $this->db->table('wp_postmeta')->whereIn('post_id', $ids)->delete();
+        $this->db->table('wp_term_relationships')->whereIn('object_id', $ids)->delete();
+
+        return count($ids);
     }
 
     /**

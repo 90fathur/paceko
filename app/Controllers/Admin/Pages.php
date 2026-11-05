@@ -50,11 +50,12 @@ class Pages extends BaseController
         }
 
         $pageData = [
-            'title'   => $this->request->getPost('title'),
-            'slug'    => $this->request->getPost('slug'),
-            'excerpt' => $this->request->getPost('excerpt'),
-            'content' => $this->request->getPost('content'),
-            'status'  => $this->request->getPost('status')
+            'title'     => $this->request->getPost('title'),
+            'slug'      => $this->request->getPost('slug'),
+            'excerpt'   => $this->request->getPost('excerpt'),
+            'content'   => $this->request->getPost('content'),
+            'status'    => $this->request->getPost('status'),
+            'author_id' => session()->get('user_id') ?? 1,
         ];
 
         $this->pageModel->createPage($pageData);
@@ -95,11 +96,12 @@ class Pages extends BaseController
         }
 
         $pageData = [
-            'title'   => $this->request->getPost('title'),
-            'slug'    => $this->request->getPost('slug'),
-            'excerpt' => $this->request->getPost('excerpt'),
-            'content' => $this->request->getPost('content'),
-            'status'  => $this->request->getPost('status')
+            'title'     => $this->request->getPost('title'),
+            'slug'      => $this->request->getPost('slug'),
+            'excerpt'   => $this->request->getPost('excerpt'),
+            'content'   => $this->request->getPost('content'),
+            'status'    => $this->request->getPost('status'),
+            'author_id' => session()->get('user_id') ?? 1,
         ];
 
         $this->pageModel->updatePage((int)$id, $pageData);
