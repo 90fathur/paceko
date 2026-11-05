@@ -42,6 +42,9 @@ if (!function_exists('get_post_image')) {
                 FCPATH . 'uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'uploads/wp-content/uploads/' . ltrim($imagePath, '/'),
                 FCPATH . 'wp-content/uploads/' . ltrim($imagePath, '/'),
+                FCPATH . 'wordpress_lama/wp-content/uploads/' . ltrim($imagePath, '/'),
+                FCPATH . 'backup_wp/wp-content/uploads/' . ltrim($imagePath, '/'),
+                FCPATH . '../wordpress_lama/wp-content/uploads/' . ltrim($imagePath, '/'),
             ];
 
             foreach ($candidates as $cand) {
