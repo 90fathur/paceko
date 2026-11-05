@@ -51,6 +51,10 @@ class Settings extends BaseController
             $this->settingModel->setSetting($field, $val);
         }
 
+        // Anti Copy-Paste Protection toggle (1 = enabled, 0 = disabled)
+        $antiCopy = $this->request->getPost('enable_anti_copy') ? '1' : '0';
+        $this->settingModel->setSetting('enable_anti_copy', $antiCopy);
+
         // Handle Logo Upload with strict extension & MIME check
         $logoFile = $this->request->getFile('site_logo');
         if ($logoFile && $logoFile->isValid() && !$logoFile->hasMoved()) {

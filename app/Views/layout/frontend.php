@@ -711,9 +711,86 @@
                 font-size: 1.25rem;
             }
         }
+
+        /* -------------------------------------------------------------
+         * Anti Copy-Paste & Content Protection (Cross-Platform & iOS)
+         * ------------------------------------------------------------- */
+        body.protect-content {
+            -webkit-touch-callout: none !important; /* Disable iOS Safari callout / popup */
+            -webkit-user-select: none !important;   /* Safari, iOS, Chrome, Android */
+            -khtml-user-select: none !important;
+            -moz-user-select: none !important;      /* Firefox */
+            -ms-user-select: none !important;       /* IE/Edge */
+            user-select: none !important;          /* Standard */
+        }
+
+        body.protect-content img {
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -webkit-user-drag: none !important;
+            user-select: none !important;
+        }
+
+        /* Allow typing, selection, and clipboard inside interactive inputs and forms */
+        body.protect-content input,
+        body.protect-content textarea,
+        body.protect-content select,
+        body.protect-content [contenteditable="true"],
+        body.protect-content .allow-select {
+            -webkit-touch-callout: default !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+
+        /* Anti-Print Protection when active */
+        @media print {
+            body.protect-content {
+                display: none !important;
+            }
+        }
+
+        /* Floating Toast Warning for Unauthorized Copy/Right-Click */
+        .paceko-copy-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(15, 23, 42, 0.94);
+            color: #ffffff;
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            border-left: 4px solid var(--paceko-red);
+            padding: 12px 18px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 999999;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 360px;
+            font-size: 0.82rem;
+            backdrop-filter: blur(8px);
+        }
+        .paceko-copy-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        @media (max-width: 576px) {
+            .paceko-copy-toast {
+                left: 16px;
+                right: 16px;
+                bottom: 20px;
+                max-width: none;
+            }
+        }
     </style>
 </head>
-<body>
+<body class="<?= (get_setting('enable_anti_copy', '1') == '1') ? 'protect-content' : '' ?>">
 
     <!-- 1. Top Bar -->
     <div class="top-bar">
@@ -1131,7 +1208,110 @@
         btt.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        <?php if (get_setting('enable_anti_copy', '1') == '1'): ?>
+        // -------------------------------------------------------------
+        // Cross-Platform & iPhone Anti Copy-Paste Protection
+        // -------------------------------------------------------------
+        (function() {
+            const toastEl = document.getElementById('pacekoCopyToast');
+            let toastTimer = null;
+
+            function showCopyWarning() {
+                if (!toastEl) return;
+                toastEl.classList.add('show');
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toastEl.classList.remove('show');
+                }, 2800);
+            }
+
+            function isInput(target) {
+                if (!target) return false;
+                const tag = target.tagName ? target.tagName.toUpperCase() : '';
+                return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable || (target.closest && target.closest('.allow-select'));
+            }
+
+            // 1. Block Context Menu (Right Click on Desktop & Long-Press on Android / iPhone)
+            document.addEventListener('contextmenu', function(e) {
+                if (isInput(e.target)) return;
+                e.preventDefault();
+                showCopyWarning();
+            }, { passive: false });
+
+            // 2. Block Copy & Cut Events (Clipboard Access)
+            document.addEventListener('copy', function(e) {
+                if (isInput(e.target)) return;
+                e.preventDefault();
+                if (e.clipboardData) {
+                    e.clipboardData.setData('text/plain', '');
+                }
+                showCopyWarning();
+            });
+
+            document.addEventListener('cut', function(e) {
+                if (isInput(e.target)) return;
+                e.preventDefault();
+                showCopyWarning();
+            });
+
+            // 3. Block Text Selection Start (Desktop & Mobile)
+            document.addEventListener('selectstart', function(e) {
+                if (isInput(e.target)) return;
+                e.preventDefault();
+            });
+
+            // 4. Block Dragging (Text & Images)
+            document.addEventListener('dragstart', function(e) {
+                if (isInput(e.target)) return;
+                e.preventDefault();
+            });
+
+            // 5. Special Handler for iPhone / iOS WebKit Safari Text Selection
+            // On iOS Safari, long-press or double-tap can trigger selection range
+            document.addEventListener('selectionchange', function() {
+                const active = document.activeElement;
+                if (isInput(active)) return;
+                const sel = window.getSelection();
+                if (sel && sel.rangeCount > 0 && sel.toString().trim().length > 0) {
+                    sel.removeAllRanges();
+                }
+            });
+
+            // 6. Keyboard Shortcuts Protection (Ctrl / Cmd + C, X, A, U, S, P)
+            window.addEventListener('keydown', function(e) {
+                if (isInput(e.target)) return;
+
+                const isCmdOrCtrl = e.ctrlKey || e.metaKey; // Handles Windows Ctrl & macOS / iOS Command
+                const key = e.key ? e.key.toLowerCase() : '';
+
+                if (isCmdOrCtrl && (key === 'c' || key === 'x' || key === 'a' || key === 'u' || key === 's' || key === 'p')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showCopyWarning();
+                    return false;
+                }
+
+                // Prevent F12 & Developer Tools shortcuts
+                if (e.keyCode === 123 || (isCmdOrCtrl && e.shiftKey && (key === 'i' || key === 'j' || key === 'c'))) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { capture: true });
+        })();
+        <?php endif; ?>
     </script>
+
+    <?php if (get_setting('enable_anti_copy', '1') == '1'): ?>
+    <!-- Anti Copy-Paste Toast Warning -->
+    <div id="pacekoCopyToast" class="paceko-copy-toast" role="alert" aria-live="assertive">
+        <i class="fa-solid fa-shield-halved text-danger fs-5"></i>
+        <div>
+            <div class="fw-bold" style="font-size: 0.85rem;">Konten Dilindungi!</div>
+            <div class="text-white-50" style="font-size: 0.75rem;">Artikel dan konten PACEKO.com dilindungi hak cipta. Dilarang menyalin tanpa izin resmi.</div>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <?= $this->renderSection('scripts') ?>
 </body>

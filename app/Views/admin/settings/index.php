@@ -40,6 +40,20 @@
                 </div>
             </div>
 
+            <!-- Keamanan & Proteksi Konten Card -->
+            <div class="card-compact p-3 mb-4">
+                <h6 class="fw-bold small border-bottom pb-2 mb-3">
+                    <i class="fa-solid fa-shield-halved text-danger me-1"></i> Proteksi Konten Berita
+                </h6>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" role="switch" id="enableAntiCopy" name="enable_anti_copy" value="1" <?= ($settings['enable_anti_copy'] ?? '1') == '1' ? 'checked' : '' ?>>
+                    <label class="form-check-label small fw-bold" for="enableAntiCopy">Anti Copy-Paste (Semua Perangkat)</label>
+                </div>
+                <p class="text-muted small mb-0" style="font-size: 0.72rem;">
+                    Mencegah pencurian dan copy-paste konten berita di semua platform (iPhone/iOS Safari, Android, dan PC Desktop) melalui blokir seleksi teks, klik kanan, shortcut keyboard (Ctrl/Cmd+C, Ctrl/Cmd+U, Ctrl/Cmd+P), dan menu callout tap-and-hold iPhone.
+                </p>
+            </div>
+
             <!-- Media Sosial -->
             <div class="card-compact p-3">
                 <h6 class="fw-bold small border-bottom pb-2 mb-3">Media Sosial Redaksi</h6>
