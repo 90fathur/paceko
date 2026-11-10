@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 <div class="container">
-    
+
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
@@ -16,7 +16,7 @@
         <!-- Main Article (8 Cols) -->
         <div class="col-lg-8">
             <article class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
-                
+
                 <!-- Category Badge -->
                 <div class="mb-2">
                     <a href="<?= base_url('kategori/' . esc($post['category_slug'])) ?>" class="category-pill bg-danger text-white">
@@ -30,14 +30,6 @@
                 </h1>
 
                 <!-- Lead/Excerpt if available -->
-                <?php 
-                $cleanLead = !empty($post['post_excerpt']) ? clean_excerpt($post['post_excerpt'], 300) : ''; 
-                ?>
-                <?php if (!empty($cleanLead)): ?>
-                    <p class="lead text-secondary fw-normal mb-4" style="font-size: 1.15rem; line-height: 1.6;">
-                        <?= esc($cleanLead) ?>
-                    </p>
-                <?php endif; ?>
 
                 <!-- Byline & Meta Info -->
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 py-3 border-top border-bottom mb-4">
@@ -147,35 +139,35 @@
 
             <!-- Berita Terkait (Related News) -->
             <?php if (!empty($relatedPosts)): ?>
-            <div class="mt-5">
-                <div class="section-header">
-                    <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Berita Terkait</h3>
-                </div>
-                <div class="row g-3">
-                    <?php foreach ($relatedPosts as $rel): ?>
-                        <div class="col-md-6 col-12">
-                            <article class="paceko-card h-100 p-3 d-flex gap-3 align-items-center">
-                                <div style="width: 100px; height: 85px; flex-shrink: 0; border-radius: 8px; overflow: hidden;">
-                                    <img src="<?= get_post_image($rel) ?>" alt="<?= esc($rel['post_title']) ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <a href="<?= base_url('kategori/' . esc($rel['category_slug'])) ?>" class="category-pill mb-1">
-                                        <?= esc($rel['category_name']) ?>
-                                    </a>
-                                    <h5 class="fs-7 fw-bold mb-1 lh-sm">
-                                        <a href="<?= base_url('berita/' . esc($rel['slug'])) ?>" class="text-dark">
-                                            <?= esc($rel['post_title']) ?>
-                                        </a>
-                                    </h5>
-                                    <div class="small text-muted" style="font-size: 0.72rem;">
-                                        <i class="fa-regular fa-clock text-danger me-1"></i> <?= time_ago_id($rel['post_date']) ?>
+                <div class="mt-5">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Berita Terkait</h3>
+                    </div>
+                    <div class="row g-3">
+                        <?php foreach ($relatedPosts as $rel): ?>
+                            <div class="col-md-6 col-12">
+                                <article class="paceko-card h-100 p-3 d-flex gap-3 align-items-center">
+                                    <div style="width: 100px; height: 85px; flex-shrink: 0; border-radius: 8px; overflow: hidden;">
+                                        <img src="<?= get_post_image($rel) ?>" alt="<?= esc($rel['post_title']) ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
                                     </div>
-                                </div>
-                            </article>
-                        </div>
-                    <?php endforeach; ?>
+                                    <div class="flex-grow-1">
+                                        <a href="<?= base_url('kategori/' . esc($rel['category_slug'])) ?>" class="category-pill mb-1">
+                                            <?= esc($rel['category_name']) ?>
+                                        </a>
+                                        <h5 class="fs-7 fw-bold mb-1 lh-sm">
+                                            <a href="<?= base_url('berita/' . esc($rel['slug'])) ?>" class="text-dark">
+                                                <?= esc($rel['post_title']) ?>
+                                            </a>
+                                        </h5>
+                                        <div class="small text-muted" style="font-size: 0.72rem;">
+                                            <i class="fa-regular fa-clock text-danger me-1"></i> <?= time_ago_id($rel['post_date']) ?>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
         </div>
@@ -192,9 +184,9 @@
                         </h5>
                     </div>
                     <div class="card-body p-3 bg-white">
-                        <?php 
+                        <?php
                         $rank = 1;
-                        foreach ($popularPosts as $pop): 
+                        foreach ($popularPosts as $pop):
                         ?>
                             <div class="trending-item">
                                 <div class="trending-num"><?= $rank++ ?></div>
@@ -250,30 +242,29 @@
 </div>
 
 <script>
-function copyArticleLink(url) {
-    navigator.clipboard.writeText(url).then(() => {
-        const notice = document.getElementById('copyNotice');
-        notice.classList.remove('d-none');
-        setTimeout(() => {
-            notice.classList.add('d-none');
-        }, 2500);
-    });
-}
-
-// Font Resizer
-let currentFontSize = 1.1; // rem
-function changeFontSize(direction) {
-    const el = document.getElementById('articleBody');
-    if (!el) return;
-    if (direction === 0) {
-        currentFontSize = 1.1;
-    } else {
-        currentFontSize += direction * 0.1;
-        if (currentFontSize < 0.9) currentFontSize = 0.9;
-        if (currentFontSize > 1.6) currentFontSize = 1.6;
+    function copyArticleLink(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            const notice = document.getElementById('copyNotice');
+            notice.classList.remove('d-none');
+            setTimeout(() => {
+                notice.classList.add('d-none');
+            }, 2500);
+        });
     }
-    el.style.fontSize = currentFontSize + 'rem';
-}
+
+    // Font Resizer
+    let currentFontSize = 1.1; // rem
+    function changeFontSize(direction) {
+        const el = document.getElementById('articleBody');
+        if (!el) return;
+        if (direction === 0) {
+            currentFontSize = 1.1;
+        } else {
+            currentFontSize += direction * 0.1;
+            if (currentFontSize < 0.9) currentFontSize = 0.9;
+            if (currentFontSize > 1.6) currentFontSize = 1.6;
+        }
+        el.style.fontSize = currentFontSize + 'rem';
+    }
 </script>
 <?= $this->endSection() ?>
-
